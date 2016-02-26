@@ -1,56 +1,46 @@
-var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
-      do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
-      ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
-      aliquip ex ea commodo consequat. Duis aute irure dolor in \
-      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
-      culpa qui officia deserunt mollit anim id est laborum."
-// var Review = {                                     // [[Review Object]]
-//   Restaurant: /* referenceTo() */ Restaurant,        // [[Restaurant Object]]
-//   rating: 2.5 /* 1~5 */                              // rating as Integer
-//   body: "Lorem ipsum dolor sit amet..."              // body as String
+/*//////////////////////////
+// KEYWORDS
+////////////////////////////
+user, review, opinion, rating, body, text, copy, tag, flavors, notes
+restaurant, location, address, zipcode, site
+search, results, expand, filter, teaser, preview, feature, promo, roll
+flow, serving, appetizer, dish
+/*/////////////////////////
+/////// OBJECT MAPS ///////
+///////////////////////////
+// var user = {
+//   name: ' ... '         // unique id
+//   zipcode: ' ZIP '     // user zipcode
+//   reviews: [ {review}, {review}, ... ] // points to reviews
 // }
-var Reviews = [
-  {
-    restaurantName: "Pho 111",
-    restaurantLocation: "111 Address Rd. City CA 90001",
-    rating: 5,
-    body: LATIN,
-    attachment: 'images/pho.jpg'
-  },
-  {
-    restaurantName: "Ionian Burger 2",
-    restaurantLocation: "2222 Address Rd. City CA 90002",
-    rating: 4,
-    body: LATIN,
-    attachment: 'images/burger.jpg'
-  },
-  {
-    restaurantName: "Tres Tacos",
-    restaurantLocation: "3333 Street Rd. Town CA 90003",
-    rating: 5,
-    body: LATIN,
-    attachment: 'images/taco.jpg'
-  },
-  {
-    restaurantName: "Bad Luck Sushi Four",
-    restaurantLocation: "44 Street Rd. Town CA 90004",
-    rating: 2,
-    body: LATIN,
-    attachment: 'images/sushi.jpg'
-  },
-  {
-    restaurantName: "Panera Bread #505",
-    restaurantLocation: "5505 Address Rd. City CA 90005",
-    rating: 4,
-    body: LATIN,
-    attachment: 'images/panini.jpg'
-  },
-  {
-    restaurantName: "Ionian Burger 2",
-    restaurantLocation: "2222 Address Rd. City CA 90002",
-    rating: 5,
-    body: LATIN,
-    attachment: 'images/burger2.jpg'
-  }
-]
+// var review = {
+//   user: user.name // points to {user},
+//   restaurant: restaurant.name // points to {restaurant},
+//   rating: 1-5,
+//   body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
+//         do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
+//         ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
+//         aliquip ex ea commodo consequat. Duis aute irure dolor in \
+//         reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
+//         pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
+//         culpa qui officia deserunt mollit anim id est laborum.',
+//   tags: ['tacos', 'pizza', 'burgers', ... ],
+//   teaser: this.body.firstTwoSentences(),
+//   image: 'url/to/image.jpg'
+// }
+// var restaurant = {
+//   name: ' ... ',
+//   address: ' 111 Address Rd. City CA 90001 ',
+//   reviews: [ {review}, {review}, ... ], // points to reviews
+//   rating: reviews.reduce( reviews.rating/total ),
+//   images: [ jpg, png, ... ] // points to review[s].images
+// }
+// var roll = [
+//   var snippet(restaurant) = {
+//     title: review.restaurantName,
+//     rating: review.rating,
+//     preview: review.teaser
+//     // , OPTIONAL!
+//     image: review.image
+//   }
+// ]
