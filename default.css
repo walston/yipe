@@ -16,3 +16,45 @@
   z-index: 0;
 }
 .container { margin-top: 50px; }
+.appetizer {
+  position: relative;
+  padding: .65em 1em;
+  margin-bottom: 3px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+.appetizer .picture {
+  display: block;
+  float: left;
+  height: 5em;
+  width: 5em;
+  margin: .25em .5em;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.picture > img {
+  min-width: 5em;
+  min-height: 5em;
+  max-width: 6.5em;
+  max-height: 6.5em;
+}
+.appetizer h4 {
+  display: inline;
+  margin-right: 1em;
+}
+.appetizer .gray { opacity: 0.3; }
+.appetizer .author {
+  float: right;
+  font-weight: bold;
+}
+.appetizer .expand {
+  float: right;
+  color: white;
+  background-color: #337ab7;
+  border-radius: 2px;
+}
+.appetizer .expand:hover {
+  color: white;
+  text-decoration: none;
+  background-color: #23527c;
+}
