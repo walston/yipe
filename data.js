@@ -15,6 +15,7 @@ flow, serving, appetizer, dish
 // }
 // var review = {
 //   user: user.name // points to {user},
+//   id: ' ...hash... '
 //   restaurant: restaurant.name // points to {restaurant},
 //   rating: 1-5,
 //   body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
