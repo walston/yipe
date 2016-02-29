@@ -64,3 +64,11 @@ function serveResults ( element, objects ) {
       mediaBody.appendChild(tags);
   })
 }
+
+document.getElementById('search').addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  serveResults(roll, Restaurants.filter(function(obj) {
+    return new RegExp(document.getElementById('query').value, 'i').test(obj.name);
+  }, this));
+  // console.log(this);
+})
