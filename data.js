@@ -1,44 +1,27 @@
-/*//////////////////////////
+////////////////////////////
 // KEYWORDS
 ////////////////////////////
-user, review, opinion, rating, body, text, copy, tag, flavors, notes
-restaurant, location, address, zipcode, site
-search, results, expand, filter, teaser, preview, feature, promo, roll
-flow, serving, appetizer, dish
-/*/////////////////////////
-/////// OBJECT MAPS ///////
-///////////////////////////
-// var user = {
-//   name: ' ... '         // unique id
-//   zipcode: ' ZIP '     // user zipcode
-//   reviews: [ {review}, {review}, ... ] // points to reviews
+// user, review, opinion, rating, body, text, copy, tag, flavors, notes
+// restaurant, location, address, zipcode, site
+// search, results, expand, filter, teaser, preview, feature, promo, roll
+// flow, serving, appetizer, dish
+// ///////////////////////////
+// /////// OBJECT MAPS ///////
+// ///////////////////////////
+// {
+//   name: 'name',
+//   address: '9999 First St. City, CA 90001'
+//   reviews: [
+//     {
+//       user: 'username',
+//       rating: 3,
+//       body: 'Lorem ipsum ...';
+//     }
+//   ],
+//   tags: ['tag1','tag2','tag3'],
+//   images: ['path/to/images.jpg']
 // }
-// var review = {
-//   user: user.name // points to {user},
-//   id: ' ...hash... '
-//   restaurant: restaurant.name // points to {restaurant},
-//   rating: 1-5,
-//   body: 'Lorem ipsum dolor sit ... ',
-//   tags: ['tacos', 'pizza', 'burgers', ... ],
-//   teaser: this.body.firstTwoSentences(),
-//   image: 'url/to/image.jpg'
-// }
-// var restaurant = {
-//   name: ' ... ',
-//   address: ' 111 Address Rd. City CA 90001 ',
-//   reviews: [ {review}, {review}, ... ], // points to reviews
-//   rating: reviews.reduce( reviews.rating/total ),
-//   images: [ jpg, png, ... ] // points to review[s].images
-// }
-// var roll = [
-//   var snippet(restaurant) = {
-//     title: review.restaurantName,
-//     rating: review.rating,
-//     preview: review.teaser
-//     // , OPTIONAL!
-//     image: review.image
-//   }
-// ]
+
 var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
       do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
       ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
@@ -47,59 +30,100 @@ var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
       culpa qui officia deserunt mollit anim id est laborum."
 
-var Reviews = [
+var Restaurants = [
   {
-    user: 'PhillipArce',
-    id: '00000001',
-    restaurant: "Pho 111",
-    rating: 5,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/pho.jpg'
+    name: 'Ionian Burger #1',
+    address: '1001 First St. City, CA 90001',
+    reviews: [
+      {
+        user: 'PhilArcadian',
+        rating: 3,
+        body: LATIN
+      }
+    ],
+    tags: ['burgers','american','greek'],
+    images: ['images/burger.jpg']
   },
   {
-    user: 'AdrianKipauldi',
-    id: '00000002',
-    restaurant: "Ionian Burger 2",
-    rating: 4,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/burger.jpg'
+    name: 'Burger King',
+    address: '222 2nd St. City, CA 90002',
+    reviews: [
+      {
+        user: 'LeonardoDicaprio',
+        rating: 4,
+        body: LATIN
+      },
+      {
+        user: 'PhilArcadian',
+        rating: 5,
+        body: LATIN
+      }
+    ],
+    tags: ['burgers','american'],
+    images: ['images/burger.jpg']
   },
   {
-    user: 'PhillipArce',
-    id: '00000003',
-    restaurant: "Tres Tacos",
-    rating: 5,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/tacos.jpg'
+    name: 'McDonald\'s',
+    address: '333 3rd St. City, CA 90003',
+    reviews: [
+      {
+        user: 'LeonardoDicaprio',
+        rating: 1,
+        body: LATIN
+      }
+    ],
+    tags: ['burgers','american','greek'],
+    images: ['images/burger.jpg']
   },
   {
-    user: 'LeonardoDiCaprio',
-    id: '00000004',
-    restaurant: "Bad Luck Sushi Four",
-    rating: 2,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/sushi.jpg'
+    name: 'Cretian Burger #4',
+    address: '4044 4th St. City, CA 90004',
+    reviews: [
+      {
+        user: 'TedMosbey',
+        rating: 1,
+        body: LATIN
+      },
+      {
+        user: 'PhilArcadian',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'LeonardoDicaprio',
+        rating: 4,
+        body: LATIN
+      }
+    ],
+    tags: ['burgers','american','greek'],
+    images: ['images/burger.jpg']
   },
   {
-    user: 'AdrianKipauldi',
-    id: '00000005',
-    restaurant: "Panera Bread #555",
-    rating: 4,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/panini.jpg'
-  },
-  {
-    user: 'LeonardoDiCaprio',
-    id: '00000006',
-    restaurant: "Ionian Burger 2",
-    rating: 5,
-    body: LATIN,
-    tags: ['food', '...'],
-    image: 'images/burger2.jpg'
+    name: 'Cinqos Tacos',
+    address: '5055 5th St. City, CA 90005',
+    reviews: [
+      {
+        user: 'PhilArcadian',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'TedMosbey',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'PhilArcadian',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'LeonardoDicaprio',
+        rating: 4,
+        body: LATIN
+      }
+    ],
+    tags: ['burgers','american','greek'],
+    images: ['images/burger.jpg']
   }
 ]
