@@ -18,13 +18,7 @@ flow, serving, appetizer, dish
 //   id: ' ...hash... '
 //   restaurant: restaurant.name // points to {restaurant},
 //   rating: 1-5,
-//   body: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
-//         do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
-//         ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
-//         aliquip ex ea commodo consequat. Duis aute irure dolor in \
-//         reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
-//         pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
-//         culpa qui officia deserunt mollit anim id est laborum.',
+//   body: 'Lorem ipsum dolor sit ... ',
 //   tags: ['tacos', 'pizza', 'burgers', ... ],
 //   teaser: this.body.firstTwoSentences(),
 //   image: 'url/to/image.jpg'
@@ -45,3 +39,67 @@ flow, serving, appetizer, dish
 //     image: review.image
 //   }
 // ]
+var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
+      do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
+      ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
+      aliquip ex ea commodo consequat. Duis aute irure dolor in \
+      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
+      culpa qui officia deserunt mollit anim id est laborum."
+
+var Reviews = [
+  {
+    user: 'PhillipArce',
+    id: '00000001',
+    restaurant: "Pho 111",
+    rating: 5,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/pho.jpg'
+  },
+  {
+    user: 'AdrianKipauldi',
+    id: '00000002',
+    restaurant: "Ionian Burger 2",
+    rating: 4,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/burger.jpg'
+  },
+  {
+    user: 'PhillipArce',
+    id: '00000003',
+    restaurant: "Tres Tacos",
+    rating: 5,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/taco.jpg'
+  },
+  {
+    user: 'LeonardoDiCaprio',
+    id: '00000004',
+    restaurant: "Bad Luck Sushi Four",
+    rating: 2,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/sushi.jpg'
+  },
+  {
+    user: 'AdrianKipauldi',
+    id: '00000005',
+    restaurant: "Panera Bread #555",
+    rating: 4,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/panini.jpg'
+  },
+  {
+    user: 'LeonardoDiCaprio',
+    id: '00000006',
+    restaurant: "Ionian Burger 2",
+    rating: 5,
+    body: LATIN,
+    tags: ['food', '...'],
+    image: 'images/burger2.jpg'
+  }
+]

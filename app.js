@@ -1,14 +1,30 @@
-//
-// var Restaurant = {                                 // [[Restaurant Object]]
-//   name: "Pho 50981",                                 // name as String
-//   location: "50981 Address Rd. City ST 10001",       // location as String
-//   rating: Math.average(All(review.rating)),
-//   reviews: [[Review], [Review], ... ],
-//   images: [[img], [img], ... ]
-// }
-//
-// var Review = {                                     // [[Review Object]]
-//   Restaurant: /* referenceTo() */ Restaurant,        // [[Restaurant Object]]
-//   rating: 2.5 /* 1~5 */                              // rating as Integer
-//   body: "Lorem ipsum dolor sit amet..."              // body as String
-// }
+var roll = document.getElementById('roll');
+var rollItems = roll.getElementsByTagName('li');
+var appetizer = rollItems[0]
+
+roll.innerHTML = formater(appetizer.outerHTML, Reviews);
+
+function formater(template, objects) {
+  // var review = {
+  //   user: user.name // points to {user},
+  //   id: ' ...hash... '
+  //   restaurant: restaurant.name // points to {restaurant},
+  //   rating: 1-5,
+  //   body: 'Lorem ipsum dolor sit ... ',
+  //   tags: ['tacos', 'pizza', 'burgers', ... ],
+  //   teaser: this.body.firstTwoSentences(),
+  //   image: 'url/to/image.jpg'
+  // }
+  var innerHTML = '';
+
+  for (var i = 0; i < objects.length; i++) {
+    var appendMe = template;
+    var review = objects[i];
+    appendMe = appendMe.replace(/{{ author }}/gi, review.user);
+    appendMe = appendMe.replace(/{{ restaurant.name }}/gi, review.restaurant);
+    appendMe = appendMe.replace(/{{ rating }}/gi, review.rating);
+    appendMe = appendMe.replace(/{{ review }}/gi, review.body);
+    innerHTML += appendMe;
+  }
+  return innerHTML;
+}
