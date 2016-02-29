@@ -1,8 +1,4 @@
-var roll = document.getElementById('roll');
-var rollItems = roll.getElementsByTagName('li');
-var appetizer = rollItems[0]
-
-serveResults(roll, Restaurants);
+serveResults(document.getElementById('roll'), Restaurants);
 
 function serveResults ( element, objects ) {
   // clear out any results
@@ -67,8 +63,7 @@ function serveResults ( element, objects ) {
 
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  serveResults(roll, Restaurants.filter(function(obj) {
+  serveResults(document.getElementById('roll'), Restaurants.filter(function(obj) {
     return new RegExp(document.getElementById('query').value, 'i').test(obj.name);
   }, this));
-  // console.log(this);
 })
