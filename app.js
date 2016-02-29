@@ -24,6 +24,7 @@ function formater(template, objects) {
     appendMe = appendMe.replace(/{{ restaurant.name }}/gi, review.restaurant);
     appendMe = appendMe.replace(/{{ rating }}/gi, review.rating);
     appendMe = appendMe.replace(/{{ review }}/gi, review.body);
+    appendMe = appendMe.replace(/{{ image-link }}/gi, review.image);
     innerHTML += appendMe;
   }
   return innerHTML;

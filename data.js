@@ -73,7 +73,7 @@ var Reviews = [
     rating: 5,
     body: LATIN,
     tags: ['food', '...'],
-    image: 'images/taco.jpg'
+    image: 'images/tacos.jpg'
   },
   {
     user: 'LeonardoDiCaprio',
