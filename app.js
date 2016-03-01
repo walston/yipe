@@ -73,8 +73,6 @@ document.getElementById('search').addEventListener('submit', function (evt) {
 
 document.getElementById('review').addEventListener('submit', function (evt) {
   evt.preventDefault();
-
-  var review = this;
   // /////// OBJECT MAP ////////
   // {
   //   name: 'name',
@@ -92,13 +90,27 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   var submission = {
     name: document.getElementById('restaurant').value,
     address: document.getElementById('address').value,
-    reviews: {
+    reviews: [{
       user: 'defaultUser',
       rating: document.getElementById('rating').value,
-      body: document.getElementById('review').value
-    },
+      body: document.getElementById('reviewBody').value
+    }],
     tags: document.getElementById('tags').value.split(/,\s*/ig),
-    images: document.getElementById('image').value
+    images: document.getElementById('image').src
   };
-  console.log(submission);
+
+  var indexOfRestaurant = Restaurants.findIndex(function(obj){
+    console.log(obj.name + ' == ' + submission.named)
+    return obj.name == submission.name;
+  })
+  if (indexOfRestaurant >= 0) {
+    Restaurants[indexOfRestaurant].reviews.unshift(submission.reviews[0]);
+  } else {
+    Restaurants.push(submission);
+  }
+
+  // reload results
+  console.log(document.getElementById('reviewBody').value)
+  console.log(submission.reviews[0].body);
+  serveResults( document.getElementById('roll'), Restaurants)
 })

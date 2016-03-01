@@ -31,29 +31,29 @@
       <form id="review" action="" method="post">
         <div class="form-group">
           <label>Restaurant Name:</label>
-          <input type="text" id="restaurant" placeholder="Restaurant">
+          <input class="form-control" type="text" id="restaurant" placeholder="Restaurant">
         </div>
         <div class="form-group">
           <label>Address:</label>
-          <input type="address" id="address" placeholder="1001 Address St. City WA 80001">
+          <input class="form-control" type="address" id="address" placeholder="1001 Address St. City WA 80001">
         </div>
         <div class="form-group">
           <label>Rating</label>
-          <input type="number" id="rating" value="4" min="1" max="5">
+          <input class="form-control" type="number" id="rating" value="4" min="1" max="5">
         </div>
         <div class="form-group">
           <label>Review</label>
-          <textarea id="review" placeholder="Tell us about your experience..."></textarea>
+          <textarea class="form-control" id="reviewBody" placeholder="Tell us about your experience..."></textarea>
         </div>
         <div class="form-group">
           <label>tags</label>
-          <input type="text" id="tags" placeholder="comma separated tags">
+          <input class="form-control" type="text" id="tags" placeholder="comma separated tags">
         </div>
         <div class="form-group">
           <label>Upload image:</label>
-          <input type="file" accept="image/*" id="image" value="">
+          <input class="form-control" type="file" accept="image/*" id="image" value="">
         </div>
-        <input type="submit" value="Submit">
+        <input class="btn btn-success pull-right" type="submit" value="Submit">
       </form>
     </div><!-- /.modal-container -->
     <script src="app.js" charset="utf-8"></script>
