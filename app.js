@@ -22,43 +22,45 @@ function serveResults ( element, objects ) {
     //   images: ['path/to/images.jpg']
     // }
     var item = document.createElement('li');
-      item.className = 'media';
-      element.appendChild(item);
     var mediaLeft = document.createElement('div');
-      mediaLeft.className = 'media-left';
-      item.appendChild(mediaLeft);
     var imageWrapper = document.createElement('a');
-      imageWrapper.href = '#';
-      mediaLeft.appendChild(imageWrapper);
     var image = document.createElement('img');
-      image.className = 'media-object'
-      image.src = obj.images[0];
-      imageWrapper.appendChild(image);
     var mediaBody = document.createElement('div');
-      mediaBody.className = 'media-body';
-      item.appendChild(mediaBody);
     var name = document.createElement('h1');
-      name.className = 'media-heading';
-      mediaBody.appendChild(name);
-      name.appendChild(document.createTextNode(obj.name));
     var rating = document.createElement('span');
-      rating.className = 'rating'
-      rating.appendChild(document.createTextNode(' '+obj.reviews[0].rating+'★'));
-      name.appendChild(rating);
     var author = document.createElement('span');
-      author.className = 'pull-right';
-      author.appendChild(document.createTextNode(obj.reviews[0].user));
-      name.appendChild(author)
     var review = document.createTextNode(obj.reviews[0].body)
-      mediaBody.appendChild(review);
     var tags = document.createElement('p');
-      tags.className = 'tags';
       obj.tags.forEach( function (tag){
         var tagElement = document.createElement('span');
         tagElement.appendChild(document.createTextNode(tag+' '))
         this.appendChild(tagElement);
       }, tags);
-      mediaBody.appendChild(tags);
+
+    item.className = 'media';
+    mediaLeft.className = 'media-left';
+    imageWrapper.href = '#';
+    image.className = 'media-object'
+    image.src = obj.images[0];
+    mediaBody.className = 'media-body';
+    name.className = 'media-heading';
+    rating.className = 'rating'
+    author.className = 'pull-right';
+    tags.className = 'tags';
+
+    mediaBody.appendChild(tags);
+    element.appendChild(item);
+    item.appendChild(mediaLeft);
+    mediaLeft.appendChild(imageWrapper);
+    imageWrapper.appendChild(image);
+    item.appendChild(mediaBody);
+    mediaBody.appendChild(name);
+    name.appendChild(document.createTextNode(obj.name));
+    rating.appendChild(document.createTextNode(' '+obj.reviews[0].rating+'★'));
+    name.appendChild(rating);
+    author.appendChild(document.createTextNode(obj.reviews[0].user));
+    name.appendChild(author)
+    mediaBody.appendChild(review);
   })
 }
 
