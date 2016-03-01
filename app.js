@@ -31,7 +31,7 @@ function serveResults ( element, objects ) {
     var author = document.createElement('span');
     var review = document.createTextNode(obj.reviews[0].body)
     var tags = document.createElement('p');
-    obj.tags.forEach( function (tag){ // throws error
+    obj.tags.forEach( function (tag){
       var tagElement = document.createElement('span');
       tagElement.className = 'tag'
       tagElement.appendChild(document.createTextNode(tag))
@@ -100,7 +100,7 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   });
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
-    submission.tags = submission.tags.filter(function(tag) { // throws error
+    submission.tags = submission.tags.filter(function(tag) {
       return !Restaurants[i].tags.includes(tag);
     })
     Restaurants[i].tags = Restaurants[i].tags.concat(submission.tags);
