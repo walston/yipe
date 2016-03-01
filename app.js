@@ -1,3 +1,5 @@
+var roll = document.getElementById('roll');
+
 serveResults(document.getElementById('roll'), Restaurants);
 
 function serveResults ( element, objects ) {
@@ -5,7 +7,6 @@ function serveResults ( element, objects ) {
   while (element.firstChild) {
     element.removeChild(element.firstChild)
   }
-  element.className.co
   objects.forEach(function(obj) {
     // {
     //   name: 'name',
