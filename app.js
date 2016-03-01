@@ -59,8 +59,8 @@ function serveResults ( element, objects ) {
               name.appendChild(rating);
               author.appendChild(document.createTextNode(obj.reviews[0].user));
             name.appendChild(author)
-          mediaBody.appendChild(review);
-          mediaBody.appendChild(tags);
+        mediaBody.appendChild(review);
+        mediaBody.appendChild(tags);
   })
 }
 
@@ -69,4 +69,36 @@ document.getElementById('search').addEventListener('submit', function (evt) {
   serveResults(document.getElementById('roll'), Restaurants.filter(function(obj) {
     return new RegExp(document.getElementById('query').value, 'i').test(obj.name);
   }, this));
+})
+
+document.getElementById('review').addEventListener('submit', function (evt) {
+  evt.preventDefault();
+
+  var review = this;
+  // /////// OBJECT MAP ////////
+  // {
+  //   name: 'name',
+  //   address: '9999 First St. City, CA 90001'
+  //   reviews: [
+  //     {
+  //       user: 'username',
+  //       rating: 3,
+  //       body: 'Lorem ipsum ...';
+  //     }
+  //   ],
+  //   tags: ['tag1','tag2','tag3'],
+  //   images: ['path/to/images.jpg']
+  // }
+  var submission = {
+    name: document.getElementById('restaurant').value,
+    address: document.getElementById('address').value,
+    reviews: {
+      user: 'defaultUser',
+      rating: document.getElementById('rating').value,
+      body: document.getElementById('review').value
+    },
+    tags: document.getElementById('tags').value.split(/,\s*/ig),
+    images: document.getElementById('image').value
+  };
+  console.log(submission);
 })
