@@ -72,7 +72,7 @@ var Restaurants = [
         body: LATIN
       }
     ],
-    tags: ['burgers','american','greek'],
+    tags: ['burgers','american'],
     images: ['images/burger.jpg']
   },
   {
@@ -95,7 +95,7 @@ var Restaurants = [
         body: LATIN
       }
     ],
-    tags: ['burgers','american','greek'],
+    tags: ['burgers','american','greek', 'italian'],
     images: ['images/burger.jpg']
   },
   {
@@ -123,7 +123,30 @@ var Restaurants = [
         body: LATIN
       }
     ],
-    tags: ['burgers','american','greek'],
-    images: ['images/burger.jpg']
+    tags: ['tacos','burritos','quesadillas','mexican'],
+    images: ['images/taco.jpg']
+  },
+  {
+    name: 'Corner Gastropub',
+    address: '5055 5th St. City, CA 90005',
+    reviews: [
+      {
+        user: 'PhilArcadian',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'TedMosbey',
+        rating: 5,
+        body: LATIN
+      },
+      {
+        user: 'LeonardoDicaprio',
+        rating: 4,
+        body: LATIN
+      }
+    ],
+    tags: ['tacos','burritos','quesadillas','mexican', 'american','burgers'],
+    images: ['images/taco.jpg']
   }
 ]
