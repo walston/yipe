@@ -31,9 +31,10 @@ function serveResults ( element, objects ) {
     var author = document.createElement('span');
     var review = document.createTextNode(obj.reviews[0].body)
     var tags = document.createElement('p');
-    var tagElement = document.createElement('span');
     obj.tags.forEach( function (tag){
-      tagElement.appendChild(document.createTextNode(tag+' '))
+      var tagElement = document.createElement('span');
+      tagElement.className = 'tag'
+      tagElement.appendChild(document.createTextNode(tag))
       this.appendChild(tagElement);
     }, tags);
 
