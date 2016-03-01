@@ -124,7 +124,7 @@ var Restaurants = [
       }
     ],
     tags: ['tacos','burritos','quesadillas','mexican'],
-    images: ['images/taco.jpg']
+    images: ['images/tacos.jpg']
   },
   {
     name: 'Corner Gastropub',
@@ -147,6 +147,6 @@ var Restaurants = [
       }
     ],
     tags: ['tacos','burritos','quesadillas','mexican', 'american','burgers'],
-    images: ['images/taco.jpg']
+    images: ['images/tacos.jpg']
   }
 ]
