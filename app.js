@@ -31,11 +31,11 @@ function serveResults ( element, objects ) {
     var author = document.createElement('span');
     var review = document.createTextNode(obj.reviews[0].body)
     var tags = document.createElement('p');
-      obj.tags.forEach( function (tag){
-        var tagElement = document.createElement('span');
-        tagElement.appendChild(document.createTextNode(tag+' '))
-        this.appendChild(tagElement);
-      }, tags);
+    var tagElement = document.createElement('span');
+    obj.tags.forEach( function (tag){
+      tagElement.appendChild(document.createTextNode(tag+' '))
+      this.appendChild(tagElement);
+    }, tags);
 
     item.className = 'media';
     mediaLeft.className = 'media-left';
@@ -48,19 +48,19 @@ function serveResults ( element, objects ) {
     author.className = 'pull-right';
     tags.className = 'tags';
 
-    mediaBody.appendChild(tags);
     element.appendChild(item);
-    item.appendChild(mediaLeft);
-    mediaLeft.appendChild(imageWrapper);
-    imageWrapper.appendChild(image);
-    item.appendChild(mediaBody);
-    mediaBody.appendChild(name);
-    name.appendChild(document.createTextNode(obj.name));
-    rating.appendChild(document.createTextNode(' '+obj.reviews[0].rating+'★'));
-    name.appendChild(rating);
-    author.appendChild(document.createTextNode(obj.reviews[0].user));
-    name.appendChild(author)
-    mediaBody.appendChild(review);
+      item.appendChild(mediaLeft);
+        mediaLeft.appendChild(imageWrapper);
+          imageWrapper.appendChild(image);
+        item.appendChild(mediaBody);
+          mediaBody.appendChild(name);
+            name.appendChild(document.createTextNode(obj.name));
+              rating.appendChild(document.createTextNode(' '+obj.reviews[0].rating+'★'));
+              name.appendChild(rating);
+              author.appendChild(document.createTextNode(obj.reviews[0].user));
+            name.appendChild(author)
+          mediaBody.appendChild(review);
+          mediaBody.appendChild(tags);
   })
 }
 
