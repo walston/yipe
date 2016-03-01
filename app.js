@@ -73,20 +73,6 @@ document.getElementById('search').addEventListener('submit', function (evt) {
 
 document.getElementById('review').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  // /////// OBJECT MAP ////////
-  // {
-  //   name: 'name',
-  //   address: '9999 First St. City, CA 90001'
-  //   reviews: [
-  //     {
-  //       user: 'username',
-  //       rating: 3,
-  //       body: 'Lorem ipsum ...';
-  //     }
-  //   ],
-  //   tags: ['tag1','tag2','tag3'],
-  //   images: ['path/to/images.jpg']
-  // }
   var submission = {
     name: document.getElementById('restaurant').value,
     address: document.getElementById('address').value,
@@ -95,22 +81,32 @@ document.getElementById('review').addEventListener('submit', function (evt) {
       rating: document.getElementById('rating').value,
       body: document.getElementById('reviewBody').value
     }],
-    tags: document.getElementById('tags').value.split(/,\s*/ig),
+    tags: cleanTags(document.getElementById('tags').value),
     images: document.getElementById('image').src
   };
 
-  var indexOfRestaurant = Restaurants.findIndex(function(obj){
-    console.log(obj.name + ' == ' + submission.named)
+  function cleanTags(string) {
+    // this feature should eventually
+    // remove duplicates being input as well
+    return string.split(/\s*,\s*/ig)
+      .forEach(function(string){
+        return string.toLowerCase();
+      });
+  }
+
+  var i = Restaurants.findIndex(function(obj){
     return obj.name == submission.name;
-  })
-  if (indexOfRestaurant >= 0) {
-    Restaurants[indexOfRestaurant].reviews.unshift(submission.reviews[0]);
+  });
+  if (i >= 0) {
+    Restaurants[i].reviews.unshift(submission.reviews[0]);
+    submission.tags = submission.tags.filter(function(tag) {
+      return !Restaurants[i].tags.includes(tag);
+    })
+    Restaurants[i].tags = Restaurants[i].tags.concat(submission.tags);
   } else {
     Restaurants.push(submission);
   }
 
   // reload results
-  console.log(document.getElementById('reviewBody').value)
-  console.log(submission.reviews[0].body);
-  serveResults( document.getElementById('roll'), Restaurants)
+  serveResults(document.getElementById('roll'), Restaurants)
 })
