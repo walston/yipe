@@ -65,11 +65,72 @@ function serveResults ( element, objects ) {
   })
 }
 
+///////////////////////////////////
+// SEARCH /////////////////////////
+///////////////////////////////////
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  serveResults(document.getElementById('roll'), Restaurants.filter(function(obj) {
-    return new RegExp(document.getElementById('query').value, 'i').test(obj.name);
-  }, this));
+  var searchResults = Restaurants.filter(byQuery).filter(byLocation);
+
+  serveResults(document.getElementById('roll'), searchResults);
+
+  function byQuery(obj) {
+    var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
+    return queryTerms.some(function (term) {
+      var query = new RegExp(term, 'i');
+      return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
+    })
+  }
+  function byLocation(obj) {
+    var locationTerms = document.getElementById('location').value.split(/[\s,\.]+/);
+    return locationTerms.some(function (term) {
+      var location = new RegExp(term, 'i');
+      return (location.test(obj.address));
+    })
+  }
+})
+
+///////////////////////////////////
+// SUBMIT REVIEW //////////////////
+///////////////////////////////////
+document.getElementById('review').addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  var submission = {
+    name: document.getElementById('restaurant').value,
+    address: document.getElementById('address').value,
+    reviews: [{
+      user: 'defaultUser',
+      rating: document.getElementById('rating').value,
+      body: document.getElementById('reviewBody').value
+    }],
+    tags: cleanTags(document.getElementById('tags').value),
+    images: document.getElementById('image').src
+  };
+
+  function cleanTags(string) {
+    // this feature should eventually
+    // remove duplicates being input as well
+    return string.split(/\s*,\s*/ig)
+      .map(function(string){
+        return string.toLowerCase();
+      });
+  }
+
+  var i = Restaurants.findIndex(function(obj){
+    return obj.name == submission.name;
+  });
+  if (i >= 0) {
+    Restaurants[i].reviews.unshift(submission.reviews[0]);
+    submission.tags = submission.tags.filter(function(tag) {
+      return !Restaurants[i].tags.includes(tag);
+    })
+    Restaurants[i].tags = Restaurants[i].tags.concat(submission.tags);
+  } else {
+    Restaurants.push(submission);
+  }
+
+  // reload results
+  serveResults(document.getElementById('roll'), Restaurants)
 })
 
 document.getElementById('review').addEventListener('submit', function (evt) {
