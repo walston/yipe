@@ -8,6 +8,8 @@ function serveResults ( element, objects ) {
     element.removeChild(element.firstChild)
   }
   objects.forEach(function(obj) {
+
+    console.log(obj); // needed to view locations.
     // {
     //   name: 'name',
     //   address: '9999 First St. City, CA 90001'
@@ -70,15 +72,25 @@ function serveResults ( element, objects ) {
 ///////////////////////////////////
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
-  serveResults(document.getElementById('roll'), Restaurants.filter(narrowSearch, this));
-  function narrowSearch(obj) {
+  var searchResults = Restaurants.filter(byQuery).filter(byLocation);
+
+  serveResults(document.getElementById('roll'), searchResults);
+
+  function byQuery(obj) {
     // narrowSearch() is a callback function for Array.filter()
     // 'this' context is passed-in
+    var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
     return queryTerms.some(function (term) {
       var query = new RegExp(term, 'i');
       return (query.test(obj.name) || // OR see below
              obj.tags.some(function(tag){ return query.test(tag) }));
+    })
+  }
+  function byLocation(obj) {
+    var locationTerms = document.getElementById('location').value.split(/[\s,\.]+/);
+    return locationTerms.some(function (term) {
+      var location = new RegExp(term, 'i');
+      return (location.test(obj.address));
     })
   }
 })
