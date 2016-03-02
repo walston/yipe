@@ -65,13 +65,25 @@ function serveResults ( element, objects ) {
   })
 }
 
+///////////////////////////////////
+// SEARCH /////////////////////////
+///////////////////////////////////
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  serveResults(document.getElementById('roll'), Restaurants.filter(function(obj) {
-    return new RegExp(document.getElementById('query').value, 'i').test(obj.name);
-  }, this));
+  serveResults(document.getElementById('roll'), Restaurants.filter(narrowSearch, this));
+  function narrowSearch(obj) {
+    // narrowSearch() is a callback function for Array.filter()
+    // 'this' context is passed-in
+    var query = new RegExp(document.getElementById('query').value, 'gi');
+    return (query.test(obj.name) || // OR see below
+           (obj.tags.findIndex(function(tag){ return query.test(tag) })>=0));
+
+  }
 })
 
+///////////////////////////////////
+// SUBMIT REVIEW //////////////////
+///////////////////////////////////
 document.getElementById('review').addEventListener('submit', function (evt) {
   evt.preventDefault();
   var submission = {
