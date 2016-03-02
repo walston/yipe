@@ -36,3 +36,15 @@
   border: 1px solid #DDD;
   border-radius: 3px;
 }
+#userReviewButton {
+  display: block;
+  position: absolute;
+  right: 15px;
+  bottom: 10px;
+  width: 1.5em;
+  height: 1.5em;
+  padding: .25em;
+  font-size: 25px;
+  color: white;
+}
+#userReviewButton:hover { color: #AFA; }
