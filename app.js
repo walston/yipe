@@ -8,8 +8,6 @@ function serveResults ( element, objects ) {
     element.removeChild(element.firstChild)
   }
   objects.forEach(function(obj) {
-
-    console.log(obj); // needed to view locations.
     // {
     //   name: 'name',
     //   address: '9999 First St. City, CA 90001'
@@ -77,13 +75,10 @@ document.getElementById('search').addEventListener('submit', function (evt) {
   serveResults(document.getElementById('roll'), searchResults);
 
   function byQuery(obj) {
-    // narrowSearch() is a callback function for Array.filter()
-    // 'this' context is passed-in
     var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
     return queryTerms.some(function (term) {
       var query = new RegExp(term, 'i');
-      return (query.test(obj.name) || // OR see below
-             obj.tags.some(function(tag){ return query.test(tag) }));
+      return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
     })
   }
   function byLocation(obj) {
