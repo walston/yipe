@@ -46,7 +46,7 @@ function serveResults ( element, objects ) {
     mediaBody.className = 'media-body';
     name.className = 'media-heading';
     rating.className = 'rating'
-    author.className = 'pull-right';
+    author.className = 'author pull-right';
     tags.className = 'tags';
 
     element.appendChild(item);
