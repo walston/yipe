@@ -70,14 +70,16 @@ function serveResults ( element, objects ) {
 ///////////////////////////////////
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
+  var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
   serveResults(document.getElementById('roll'), Restaurants.filter(narrowSearch, this));
   function narrowSearch(obj) {
     // narrowSearch() is a callback function for Array.filter()
     // 'this' context is passed-in
-    var query = new RegExp(document.getElementById('query').value, 'gi');
-    return (query.test(obj.name) || // OR see below
-           (obj.tags.findIndex(function(tag){ return query.test(tag) })>=0));
-
+    return queryTerms.some(function (term) {
+      var query = new RegExp(term, 'i');
+      return (query.test(obj.name) || // OR see below
+             obj.tags.some(function(tag){ return query.test(tag) }));
+    })
   }
 })
 
