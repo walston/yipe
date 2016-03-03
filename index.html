@@ -12,15 +12,17 @@
     <header class="jumbotron banner-image">
       <div class="overlay">
         <div class="container">
-          <img class="logo" src="images/yhelp.svg" alt="Yhelp">
-          <form class="masthead form-inline text-center" id="search">
-            <div class="form-group col-xs-12">
-              <input class="form-control input-lg" id="query" type="text" name="query" placeholder="Search...">
-              <input class="form-control input-lg" id="location" type="text" name="location" placeholder="Near Me...">
-              <input class="btn-lg btn-success" type="submit" name="submit" value="Go">
-            </div>
-          </form>
-          <a id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
+          <div class="row text-center">
+            <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
+            <form class="masthead form-inline" id="search">
+              <div class="form-group col-xs-10 text-center">
+                <input class="form-control input" id="query" type="text" name="query" placeholder="Search...">
+                <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
+                <input class="btn btn-success" type="submit" name="submit" value="Go">
+              </div>
+            </form>
+            <a class="btn btn-primary pull-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
+          </div><!-- /.row -->
         </div><!-- /.container<.jumbotron -->
       </div><!-- /.overlay -->
     </header> <!-- /.jumbotron -->
