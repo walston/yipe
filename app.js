@@ -32,7 +32,6 @@ function serveResults ( element, objects ) {
     var review = document.createTextNode(obj.reviews[0].body)
     var tags = document.createElement('p');
     obj.tags.forEach( function (tag, i){
-      console.log('"'+obj.name + '".tags['+i+']='+ tag);
       var tagElement = document.createElement('span');
       tagElement.className = 'tag'
       tagElement.appendChild(document.createTextNode(tag))
@@ -94,54 +93,7 @@ document.getElementById('search').addEventListener('submit', function (evt) {
 ///////////////////////////////////
 // SUBMIT REVIEW //////////////////
 ///////////////////////////////////
-document.getElementById('review').addEventListener('submit', function (evt) {
-  evt.preventDefault();
-  var submission = {
-    name: document.getElementById('restaurant').value,
-    address: document.getElementById('address').value,
-    reviews: [{
-      user: 'defaultUser',
-      rating: document.getElementById('rating').value,
-      body: document.getElementById('reviewBody').value
-    }],
-    // issue #7: this is the likely root of the problem.
-    tags: cleanTags(document.getElementById('tags').value),
-    images: document.getElementById('image').src
-  };
-
-  // issue #7: this is a prime suspect
-  function cleanTags(rawInput) {
-    // this feature should eventually
-    // remove duplicates being input as well
-    return rawInput.split(/\s*,\s*/ig)
-      .map(function(tag){
-        return tag.toLowerCase();
-      });
-  }
-
-  var i = Restaurants.findIndex(function(obj){
-    return obj.name == submission.name;
-  });
-  if (i >= 0) {
-    Restaurants[i].reviews.unshift(submission.reviews[0]);
-    console.log(Restaurants[i].tags.length);
-    // issue #7: secondary suspect
-    submission.tags.forEach(function (tag) {
-      if (!Restaurants[i].tags.includes(tag)) {
-        console.log('something happened');
-        Restaurants[i].tags.push(tag);
-      }
-    });
-    console.log(Restaurants[i].tags.length);
-  } else {
-    Restaurants.push(submission);
-  }
-
-  // reload results
-  serveResults(document.getElementById('roll'), Restaurants)
-})
-
-document.getElementById('review').addEventListener('submit', function (evt) {
+document.getElementById('review').addEventListener('submit', function  (evt) {
   evt.preventDefault();
   var submission = {
     name: document.getElementById('restaurant').value,
@@ -173,8 +125,9 @@ document.getElementById('review').addEventListener('submit', function (evt) {
     .filter(function(tag) {
       return !Restaurants[i].tags.includes(tag);
     }).forEach(function (tag) {
-      console.log('Push: Restauraunts['+i+'].tags.push('+tag+')')
-      Restaurants[i].tags.push(tag);
+      if (tag) {
+        Restaurants[i].tags.push(tag);
+      }
     })
   } else {
     Restaurants.push(submission);
@@ -183,7 +136,7 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   // reload results
   serveResults(document.getElementById('roll'), Restaurants);
   modalization();
-})
+});
 function modalization (event) {
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
 
