@@ -21,32 +21,33 @@ function serveResults ( element, objects ) {
     //   tags: ['tag1','tag2','tag3'],
     //   images: ['path/to/images.jpg']
     // }
-    var item = document.createElement('li');
+    var item = document.createElement('div');
     var mediaLeft = document.createElement('div');
-    var imageWrapper = document.createElement('a');
+    var imageWrapper = document.createElement('div');
     var image = document.createElement('img');
     var mediaBody = document.createElement('div');
     var name = document.createElement('h1');
     var rating = document.createElement('span');
     var author = document.createElement('span');
-    var review = document.createTextNode(obj.reviews[0].body)
+    var review = document.createTextNode(obj.reviews[0].body);
     var tags = document.createElement('p');
     obj.tags.forEach( function (tag, i){
       var tagElement = document.createElement('span');
-      tagElement.className = 'tag'
-      tagElement.appendChild(document.createTextNode(tag))
+      tagElement.className = 'text-info tag';
+      i > 0 ? tagElement.appendChild(document.createTextNode(' ')) : null ;
+      tagElement.appendChild(document.createTextNode(tag));
       this.appendChild(tagElement);
     }, tags);
 
-    item.className = 'media';
-    mediaLeft.className = 'media-left';
-    imageWrapper.href = '#';
-    image.className = 'media-object';
+    item.className = 'row';
+    mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
+    imageWrapper.className = 'h1';
+    image.className = 'img-responsive inline-block';
     image.src = obj.images[0];
-    mediaBody.className = 'media-body';
-    name.className = 'media-heading';
-    rating.className = 'rating'
-    author.className = 'author pull-right';
+    mediaBody.className = 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10';
+    name.className = 'h2';
+    rating.className = 'text-muted h4';
+    author.className = 'text-muted h4';
     tags.className = 'tags';
 
     element.appendChild(item);
@@ -56,10 +57,12 @@ function serveResults ( element, objects ) {
         item.appendChild(mediaBody);
           mediaBody.appendChild(name);
             name.appendChild(document.createTextNode(obj.name));
-              rating.appendChild(document.createTextNode(' '+obj.reviews[0].rating+'★'));
-              name.appendChild(rating);
+            name.appendChild(document.createTextNode(' '));
+              rating.appendChild(document.createTextNode(obj.reviews[0].rating+'★'));
+            name.appendChild(rating);
+            name.appendChild(document.createTextNode(' '));
               author.appendChild(document.createTextNode(obj.reviews[0].user));
-            name.appendChild(author)
+            name.appendChild(author);
         mediaBody.appendChild(review);
         mediaBody.appendChild(tags);
   })
