@@ -10,21 +10,20 @@
   </head>
   <body>
     <nav class="navbar navbar-default banner-image">
-      <div class="overlay">
+    <div class="overlay"></div>
         <div class="container">
-          <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
-          <form class="navbar-form" id="search">
-            <div class="form-group col-xs-10 text-center">
+          <div class="row h1">
+            <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
+            <form class="form-inline" id="search" role="search">
               <label class="sr-only" for="query">Search</label>
               <input class="form-control input" id="query" type="text" name="query" placeholder="Search...">
               <label class="sr-only" for="location">... in location</label>
               <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
-              <input class="btn btn-success" type="submit" name="submit" value="Go">
-            </div>
-          </form>
-          <a class="btn btn-primary navbar-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
+              <input class="btn btn-success" type="submit" name="submit" value="Search">
+              <a class="btn btn-primary navbar-btn navbar-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span><span class="visible-xs-inline"> Add Review</span></a>
+            </form>
+          </div>
         </div><!-- /.container -->
-      </div><!-- /.overlay -->
     </nav>
     <div class="container" id="roll">
     </div><!-- /.container -->
