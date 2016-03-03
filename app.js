@@ -104,9 +104,12 @@ document.getElementById('review').addEventListener('submit', function (evt) {
       rating: document.getElementById('rating').value,
       body: document.getElementById('reviewBody').value
     }],
+    // issue #7: this is the likely root of the problem.
     tags: cleanTags(document.getElementById('tags').value),
     images: document.getElementById('image').src
   };
+
+  // issue #7: this is a prime suspect
   function cleanTags(rawInput) {
     // this feature should eventually
     // remove duplicates being input as well
@@ -122,6 +125,7 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
     console.log(Restaurants[i].tags.length);
+    // issue #7: secondary suspect
     submission.tags.forEach(function (tag) {
       if (!Restaurants[i].tags.includes(tag)) {
         console.log('something happened');
@@ -165,10 +169,13 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   });
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
-    submission.tags = submission.tags.filter(function(tag) {
+    submission.tags //
+    .filter(function(tag) {
       return !Restaurants[i].tags.includes(tag);
+    }).forEach(function (tag) {
+      console.log('Push: Restauraunts['+i+'].tags.push('+tag+')')
+      Restaurants[i].tags.push(tag);
     })
-    Restaurants[i].tags = Restaurants[i].tags.concat(submission.tags);
   } else {
     Restaurants.push(submission);
   }
