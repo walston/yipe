@@ -14,15 +14,6 @@
   background-color: rgba(198, 15, 18, 0.75);
   z-index: 0;
 }
-.container { margin-top: 2em; }
-.media img {
-  width: 64px;
-  height: 64px;
-}
-.rating, .author {
-  font-size: 18px;
-  opacity: 0.7;
-}
 .tag {
   padding: 3px;
   margin-right: 3px;

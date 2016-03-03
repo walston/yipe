@@ -9,23 +9,23 @@
     <script src="data.js" charset="utf-8"></script>
   </head>
   <body>
-    <header class="jumbotron banner-image">
+    <nav class="navbar navbar-default banner-image">
       <div class="overlay">
         <div class="container">
-          <div class="row text-center">
-            <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
-            <form class="masthead form-inline" id="search">
-              <div class="form-group col-xs-10 text-center">
-                <input class="form-control input" id="query" type="text" name="query" placeholder="Search...">
-                <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
-                <input class="btn btn-success" type="submit" name="submit" value="Go">
-              </div>
-            </form>
-            <a class="btn btn-primary pull-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
-          </div><!-- /.row -->
-        </div><!-- /.container<.jumbotron -->
+          <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
+          <form class="navbar-form" id="search">
+            <div class="form-group col-xs-10 text-center">
+              <label class="sr-only" for="query">Search</label>
+              <input class="form-control input" id="query" type="text" name="query" placeholder="Search...">
+              <label class="sr-only" for="location">... in location</label>
+              <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
+              <input class="btn btn-success" type="submit" name="submit" value="Go">
+            </div>
+          </form>
+          <a class="btn btn-primary navbar-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
+        </div><!-- /.container -->
       </div><!-- /.overlay -->
-    </header> <!-- /.jumbotron -->
+    </nav>
       <div class="media-list container" id="roll">
       </div><!-- /.media-list container -->
     <div id="userReviewModal" class="hidden">
