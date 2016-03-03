@@ -1,6 +1,6 @@
 var roll = document.getElementById('roll');
 
-serveResults(document.getElementById('roll'), Restaurants);
+serveResults(roll, Restaurants);
 
 function serveResults ( element, objects ) {
   // clear out any results
@@ -32,7 +32,7 @@ function serveResults ( element, objects ) {
       parent.appendChild(node);
       return node;
     }
-    var item = element('div', document.getElementById('roll'), 'row');
+    var item = element('div', roll, 'row');
     var mediaLeft = element('div', item, 'hidden-xs col-sm-3 col-md-2');
     var imageWrapper = element('div', mediaLeft, 'h1');
     var image = element('img', imageWrapper, 'img-responsive inline-block');
@@ -63,7 +63,7 @@ document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
   var searchResults = Restaurants.filter(byQuery).filter(byLocation);
 
-  serveResults(document.getElementById('roll'), searchResults);
+  serveResults(roll, searchResults);
 
   function byQuery(obj) {
     var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
@@ -125,7 +125,7 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
   }
 
   // reload results
-  serveResults(document.getElementById('roll'), Restaurants);
+  serveResults(roll, Restaurants);
   modalization();
 });
 function modalization (event) {
