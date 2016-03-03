@@ -31,7 +31,8 @@ function serveResults ( element, objects ) {
     var author = document.createElement('span');
     var review = document.createTextNode(obj.reviews[0].body)
     var tags = document.createElement('p');
-    obj.tags.forEach( function (tag){
+    obj.tags.forEach( function (tag, i){
+      console.log('"'+obj.name + '".tags['+i+']='+ tag);
       var tagElement = document.createElement('span');
       tagElement.className = 'tag'
       tagElement.appendChild(document.createTextNode(tag))
@@ -106,13 +107,12 @@ document.getElementById('review').addEventListener('submit', function (evt) {
     tags: cleanTags(document.getElementById('tags').value),
     images: document.getElementById('image').src
   };
-
-  function cleanTags(string) {
+  function cleanTags(rawInput) {
     // this feature should eventually
     // remove duplicates being input as well
-    return string.split(/\s*,\s*/ig)
-      .map(function(string){
-        return string.toLowerCase();
+    return rawInput.split(/\s*,\s*/ig)
+      .map(function(tag){
+        return tag.toLowerCase();
       });
   }
 
@@ -121,10 +121,14 @@ document.getElementById('review').addEventListener('submit', function (evt) {
   });
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
-    submission.tags = submission.tags.filter(function(tag) {
-      return !Restaurants[i].tags.includes(tag);
-    })
-    Restaurants[i].tags = Restaurants[i].tags.concat(submission.tags);
+    console.log(Restaurants[i].tags.length);
+    submission.tags.forEach(function (tag) {
+      if (!Restaurants[i].tags.includes(tag)) {
+        console.log('something happened');
+        Restaurants[i].tags.push(tag);
+      }
+    });
+    console.log(Restaurants[i].tags.length);
   } else {
     Restaurants.push(submission);
   }
