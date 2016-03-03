@@ -41,7 +41,8 @@ function serveResults ( element, objects ) {
     item.className = 'media';
     mediaLeft.className = 'media-left';
     imageWrapper.href = '#';
-    image.className = 'media-object';
+    imageWrapper.className = 'img-responsive';
+    image.className = 'media-object img-responsive';
     image.src = obj.images[0];
     mediaBody.className = 'media-body';
     name.className = 'media-heading';

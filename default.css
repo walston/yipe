@@ -1,6 +1,4 @@
 .banner-image {
-  position: relative;
-  height: 100px;
   background-image: url(images/background.jpg);
   background-position: center;
   background-size: cover;
@@ -14,11 +12,6 @@
   margin: 0;
   background-color: rgba(198, 15, 18, 0.75);
   z-index: 0;
-}
-.container { margin-top: 2em; }
-.media img {
-  width: 64px;
-  height: 64px;
 }
 .rating, .author {
   font-size: 18px;
