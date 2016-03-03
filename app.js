@@ -34,7 +34,7 @@ function serveResults ( element, objects ) {
     obj.tags.forEach( function (tag, i){
       var tagElement = document.createElement('span');
       tagElement.className = 'text-info tag';
-      i > 0 ? tagElement.appendChild(document.createTextNode(' ')) : null ;
+      i > 0 ? this.appendChild(document.createTextNode(' ')) : null ;
       tagElement.appendChild(document.createTextNode(tag));
       this.appendChild(tagElement);
     }, tags);
