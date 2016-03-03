@@ -21,50 +21,38 @@ function serveResults ( element, objects ) {
     //   tags: ['tag1','tag2','tag3'],
     //   images: ['path/to/images.jpg']
     // }
-    var item = document.createElement('div');
-    var mediaLeft = document.createElement('div');
-    var imageWrapper = document.createElement('div');
-    var image = document.createElement('img');
-    var mediaBody = document.createElement('div');
-    var name = document.createElement('h1');
-    var rating = document.createElement('span');
-    var author = document.createElement('span');
-    var review = document.createTextNode(obj.reviews[0].body);
-    var tags = document.createElement('p');
+    function element ( tag, parent, classes ) {
+      var node = document.createElement(tag);
+      if (classes) { node.className = classes; }
+      parent.appendChild(node)
+      return node;
+    }
+    function textNode ( content, parent ) {
+      var node = document.createTextNode(content);
+      parent.appendChild(node);
+      return node;
+    }
+    var item = element('div', document.getElementById('roll'), 'row');
+    var mediaLeft = element('div', item, 'hidden-xs col-sm-3 col-md-2');
+    var imageWrapper = element('div', mediaLeft, 'h1');
+    var image = element('img', imageWrapper, 'img-responsive inline-block');
+        image.src = obj.images[0];
+    var mediaBody = element('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
+    var name = element('h1', mediaBody, 'h2');
+               textNode(obj.name, name);
+               textNode(' ', name);
+    var rating = element('span', name, 'text-muted h4');
+               textNode(obj.reviews[0].rating, rating);
+               textNode(' ', name);
+    var author = element('span', name, 'text-muted h4');
+               textNode(obj.reviews[0].user, author);
+    var review = textNode(obj.reviews[0].body, mediaBody);
+    var tags = element('p', mediaBody);
     obj.tags.forEach( function (tag, i){
-      var tagElement = document.createElement('span');
-      tagElement.className = 'text-info tag';
-      i > 0 ? this.appendChild(document.createTextNode(' ')) : null ;
-      tagElement.appendChild(document.createTextNode(tag));
-      this.appendChild(tagElement);
+      var tagElement = element('span', this, 'text-info tag');
+      textNode(tag, tagElement)
+      textNode(' ', this);
     }, tags);
-
-    item.className = 'row';
-    mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
-    imageWrapper.className = 'h1';
-    image.className = 'img-responsive inline-block';
-    image.src = obj.images[0];
-    mediaBody.className = 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10';
-    name.className = 'h2';
-    rating.className = 'text-muted h4';
-    author.className = 'text-muted h4';
-    tags.className = 'tags';
-
-    element.appendChild(item);
-      item.appendChild(mediaLeft);
-        mediaLeft.appendChild(imageWrapper);
-          imageWrapper.appendChild(image);
-        item.appendChild(mediaBody);
-          mediaBody.appendChild(name);
-            name.appendChild(document.createTextNode(obj.name));
-            name.appendChild(document.createTextNode(' '));
-              rating.appendChild(document.createTextNode(obj.reviews[0].rating+'★'));
-            name.appendChild(rating);
-            name.appendChild(document.createTextNode(' '));
-              author.appendChild(document.createTextNode(obj.reviews[0].user));
-            name.appendChild(author);
-        mediaBody.appendChild(review);
-        mediaBody.appendChild(tags);
   })
 }
 
