@@ -1,6 +1,15 @@
 var roll = document.getElementById('roll');
 
-serveResults(document.getElementById('roll'), Restaurants);
+function toggleClassName(element, value) {
+  var classList = element.className.split(' ');
+  var i = classList.indexOf(value);
+  if ( i < 0 ) {
+    classList.push(value);
+  } else {
+    classList.splice(i,1);
+  }
+  element.className = classList.join(' ');
+}
 
 function serveResults ( element, objects ) {
   // clear out any results
@@ -138,21 +147,11 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
 
   // reload results
   serveResults(document.getElementById('roll'), Restaurants);
-  modalization();
-});
-function modalization (event) {
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+});
 
-  function toggleClassName(element, value) {
-    var classList = element.className.split(' ');
-    var i = classList.indexOf(value);
-    if ( i < 0 ) {
-      classList.push(value);
-    } else {
-      classList.splice(i,1);
-    }
-    element.className = classList.join(' ');
-  }
-}
-document.getElementById('userReviewButton').addEventListener('click', modalization)
-document.getElementById('userReviewCancelButton').addEventListener('click', modalization)
+function hideUserReviewModal (event) { toggleClassName(document.getElementById('userReviewModal'), 'hidden'); }
+document.getElementById('userReviewButton').addEventListener('click', hideUserReviewModal)
+document.getElementById('userReviewCancelButton').addEventListener('click', hideUserReviewModal)
+
+serveResults(document.getElementById('roll'), Restaurants);
