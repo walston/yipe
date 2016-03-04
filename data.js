@@ -1,27 +1,3 @@
-////////////////////////////
-// KEYWORDS
-////////////////////////////
-// user, review, opinion, rating, body, text, copy, tag, flavors, notes
-// restaurant, location, address, zipcode, site
-// search, results, expand, filter, teaser, preview, feature, promo, roll
-// flow, serving, appetizer, dish
-// ///////////////////////////
-// /////// OBJECT MAPS ///////
-// ///////////////////////////
-// {
-//   name: 'name',
-//   address: '9999 First St. City, CA 90001'
-//   reviews: [
-//     {
-//       user: 'username',
-//       rating: 3,
-//       body: 'Lorem ipsum ...';
-//     }
-//   ],
-//   tags: ['tag1','tag2','tag3'],
-//   images: ['path/to/images.jpg']
-// }
-
 var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
       do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim \
       ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut \
@@ -29,6 +5,15 @@ var LATIN = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed \
       reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla \
       pariatur. Excepteur sint occaecat cupidatat non proident, sunt in \
       culpa qui officia deserunt mollit anim id est laborum."
+var User = {
+  PhilArcadian: 'PhilArcadian',
+  LeonardoDicaprio: 'LeonardoDicaprio',
+  TedMosbey: 'TedMosbey',
+  LilyAldrin: 'LilyAldrin',
+  MarshallEriksen: 'MarshallEriksen',
+  RobinSherbatsky: 'RobinSherbatsky',
+  BarneyStinson: 'BarneyStinson'
+}
 
 var Restaurants = [
   {
@@ -38,7 +23,12 @@ var Restaurants = [
       {
         user: 'PhilArcadian',
         rating: 3,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LeonardoDicaprio'],
+          witty: [],
+          harsh: []
+        }
       }
     ],
     tags: ['burgers','american','greek'],
@@ -51,12 +41,22 @@ var Restaurants = [
       {
         user: 'LeonardoDicaprio',
         rating: 4,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['PhilArcadian', 'RobinSherbatsky'],
+          witty: [],
+          harsh: ['BarneyStinson']
+        }
       },
       {
         user: 'PhilArcadian',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LeonardoDicaprio'],
+          witty: [],
+          harsh: []
+        }
       }
     ],
     tags: ['burgers','american'],
@@ -69,7 +69,12 @@ var Restaurants = [
       {
         user: 'LeonardoDicaprio',
         rating: 1,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: [],
+          witty: ['TedMosbey'],
+          harsh: []
+        }
       }
     ],
     tags: ['burgers','american'],
@@ -82,17 +87,32 @@ var Restaurants = [
       {
         user: 'TedMosbey',
         rating: 1,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: [],
+          witty: [],
+          harsh: ['BarneyStinson','LilyAldrin']
+        }
       },
       {
-        user: 'PhilArcadian',
+        user: 'LilyAldrin',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LeonardoDicaprio'],
+          witty: [],
+          harsh: []
+        }
       },
       {
         user: 'LeonardoDicaprio',
         rating: 4,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LilyAldrin'],
+          witty: ['TedMosbey','RobinSherbatsky','MarshallEriksen'],
+          harsh: []
+        }
       }
     ],
     tags: ['burgers','american','greek', 'italian'],
@@ -103,24 +123,45 @@ var Restaurants = [
     address: '5055 5th St. City, CA 90005',
     reviews: [
       {
-        user: 'PhilArcadian',
+        user: 'MarshallEriksen',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LeonardoDicaprio','LilyAldrin','RobinSherbatsky'],
+          witty: [],
+          harsh: []
+        }
       },
       {
         user: 'TedMosbey',
         rating: 5,
-        body: LATIN
+        body: 'While Cinquos Tacquos may be delicious, the chicken \
+        tastes just like the kitchen *cinq* ;D',
+        ups: {
+          helpful: [],
+          witty: ['TedMosbey'],
+          harsh: ['BarneyStinson']
+        }
       },
       {
         user: 'PhilArcadian',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LeonardoDicaprio'],
+          witty: [],
+          harsh: []
+        }
       },
       {
         user: 'LeonardoDicaprio',
         rating: 4,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['TedMosbey'],
+          witty: [],
+          harsh: []
+        }
       }
     ],
     tags: ['tacos','burritos','quesadillas','mexican'],
@@ -131,19 +172,34 @@ var Restaurants = [
     address: '5055 5th St. City, CA 90005',
     reviews: [
       {
-        user: 'PhilArcadian',
+        user: 'LilyAldrin',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['MarshallEriksen'],
+          witty: [],
+          harsh: []
+        }
       },
       {
-        user: 'TedMosbey',
+        user: 'MarshallEriksen',
         rating: 5,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['LilyAldrin'],
+          witty: [],
+          harsh: []
+        }
       },
       {
         user: 'LeonardoDicaprio',
         rating: 4,
-        body: LATIN
+        body: LATIN,
+        ups: {
+          helpful: ['RobinSherbatsky'],
+          witty: [],
+          harsh: []
+        }
       }
     ],
     tags: ['tacos','burritos','quesadillas','mexican', 'american','burgers'],
