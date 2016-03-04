@@ -1,52 +1,52 @@
 var roll = document.getElementById('roll');
 
-function toggleClassName(element, value) {
-  var classList = element.className.split(' ');
+var toggleClassName = function (el, value) {
+  var classList = el.className.split(' ');
   var i = classList.indexOf(value);
   if ( i < 0 ) {
     classList.push(value);
   } else {
     classList.splice(i,1);
   }
-  element.className = classList.join(' ');
+  el.className = classList.join(' ');
 }
-function element ( tag, parent, classes ) {
+var el = function ( tag, parent, classes ) {
   var node = document.createElement(tag);
   if (classes) { node.className = classes; }
   parent.appendChild(node)
   return node;
 }
-function textNode ( content, parent ) {
+var txt = function ( content, parent ) {
   var node = document.createTextNode(content);
   parent.appendChild(node);
   return node;
 }
-function serveResults ( element, objects ) {
+var serveResults = function ( parent, objects ) {
   // clear out any results
-  while (element.firstChild) {
-    element.removeChild(element.firstChild)
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild)
   }
   objects.forEach(function(obj) {
-    var item = element('div', roll, 'row');
-    var mediaLeft = element('div', item, 'hidden-xs col-sm-3 col-md-2');
-    var imageWrapper = element('div', mediaLeft, 'h1');
-    var image = element('img', imageWrapper, 'img-responsive inline-block');
+    var item = el('div', roll, 'row');
+    var mediaLeft = el('div', item, 'hidden-xs col-sm-3 col-md-2');
+    var imageWrapper = el('div', mediaLeft, 'h1');
+    var image = el('img', imageWrapper, 'img-responsive inline-block');
         image.src = obj.images[0];
-    var mediaBody = element('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
-    var name = element('h1', mediaBody, 'h2');
-               textNode(obj.name, name);
-               textNode(' ', name);
-    var rating = element('span', name, 'text-muted h4');
-               textNode(obj.reviews[0].rating, rating);
-               textNode(' ', name);
-    var author = element('span', name, 'text-muted h4');
-               textNode(obj.reviews[0].user, author);
-    var review = textNode(obj.reviews[0].body, mediaBody);
-    var tags = element('p', mediaBody);
+    var mediaBody = el('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
+    var name = el('h1', mediaBody, 'h2');
+               txt(obj.name, name);
+               txt(' ', name);
+    var rating = el('span', name, 'text-muted h4');
+               txt(obj.reviews[0].rating+'☆', rating);
+               txt(' ', name);
+    var author = el('span', name, 'text-muted h4');
+               txt(obj.reviews[0].user, author);
+    var review = txt(obj.reviews[0].body, mediaBody);
+    var tags = el('p', mediaBody);
     obj.tags.forEach( function (tag, i){
-      var tagElement = element('span', this, 'text-info tag');
-      textNode(tag, tagElement)
-      textNode(' ', this);
+      var tagElement = el('span', this, 'text-info tag');
+      txt(tag, tagElement)
+      txt(' ', this);
     }, tags);
   })
 }
@@ -86,8 +86,7 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
     images: document.getElementById('image').src
   };
   function cleanTags(string) {
-    // this feature should eventually
-    // remove duplicates being input as well
+    // use _.uniq()?
     return string.split(/\s*,\s*/ig)
       .map(function(string){
         return string.toLowerCase();
