@@ -138,7 +138,7 @@ var Restaurants = [
         body: 'While Cinquos Tacquos may be delicious, the chicken \
         tastes just like the kitchen *cinq* ;D',
         ups: {
-          helpful: [],
+          helpful: ['RobinSherbatsky','LilyAldrin','LeonardoDicaprio','PhilArcadian','MarshallEriksen'],
           witty: ['TedMosbey'],
           harsh: ['BarneyStinson']
         }

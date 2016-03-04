@@ -26,24 +26,39 @@ var serveResults = function ( parent, objects ) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild)
   }
-  objects.forEach(function(obj) {
+  objects.forEach(function(restaurant) {
+    restaurant.idealReview = (function () {
+      return _.max(restaurant.reviews, function (review) {
+        return (review.ups['helpful'].length + review.ups['witty'].length);
+      });
+    })();
+    restaurant.averageRating = (function () {
+      var ratings = _.map(restaurant.reviews, function (review) {
+        return review.rating;
+      });
+      console.log(ratings);
+      var average = Math.floor(_.reduce(ratings,
+        function (s, j) { return s + j; }) / ratings.length);
+      
+      return average;
+    })();
     var item = el('div', roll, 'row');
     var mediaLeft = el('div', item, 'hidden-xs col-sm-3 col-md-2');
     var imageWrapper = el('div', mediaLeft, 'h1');
     var image = el('img', imageWrapper, 'img-responsive inline-block');
-        image.src = obj.images[0];
+        image.src = restaurant.images[0];
     var mediaBody = el('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
     var name = el('h1', mediaBody, 'h2');
-               txt(obj.name, name);
+               txt(restaurant.name, name);
                txt(' ', name);
     var rating = el('span', name, 'text-muted h4');
-               txt(obj.reviews[0].rating+'☆', rating);
+               txt(restaurant.averageRating+'☆', rating);
                txt(' ', name);
     var author = el('span', name, 'text-muted h4');
-               txt(obj.reviews[0].user, author);
-    var review = txt(obj.reviews[0].body, mediaBody);
+               txt(restaurant.idealReview.user, author);
+    var review = txt(restaurant.idealReview.body, mediaBody);
     var tags = el('p', mediaBody);
-    obj.tags.forEach( function (tag, i){
+    restaurant.tags.forEach( function (tag, i){
       var tagElement = el('span', this, 'text-info tag');
       txt(tag, tagElement)
       txt(' ', this);
