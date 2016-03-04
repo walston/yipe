@@ -1,37 +1,32 @@
 var roll = document.getElementById('roll');
 
-serveResults(roll, Restaurants);
-
+function toggleClassName(element, value) {
+  var classList = element.className.split(' ');
+  var i = classList.indexOf(value);
+  if ( i < 0 ) {
+    classList.push(value);
+  } else {
+    classList.splice(i,1);
+  }
+  element.className = classList.join(' ');
+}
+function element ( tag, parent, classes ) {
+  var node = document.createElement(tag);
+  if (classes) { node.className = classes; }
+  parent.appendChild(node)
+  return node;
+}
+function textNode ( content, parent ) {
+  var node = document.createTextNode(content);
+  parent.appendChild(node);
+  return node;
+}
 function serveResults ( element, objects ) {
   // clear out any results
   while (element.firstChild) {
     element.removeChild(element.firstChild)
   }
   objects.forEach(function(obj) {
-    // {
-    //   name: 'name',
-    //   address: '9999 First St. City, CA 90001'
-    //   reviews: [
-    //     {
-    //       user: 'username',
-    //       rating: 3,
-    //       body: 'Lorem ipsum ...';
-    //     }
-    //   ],
-    //   tags: ['tag1','tag2','tag3'],
-    //   images: ['path/to/images.jpg']
-    // }
-    function element ( tag, parent, classes ) {
-      var node = document.createElement(tag);
-      if (classes) { node.className = classes; }
-      parent.appendChild(node)
-      return node;
-    }
-    function textNode ( content, parent ) {
-      var node = document.createTextNode(content);
-      parent.appendChild(node);
-      return node;
-    }
     var item = element('div', roll, 'row');
     var mediaLeft = element('div', item, 'hidden-xs col-sm-3 col-md-2');
     var imageWrapper = element('div', mediaLeft, 'h1');
@@ -56,14 +51,9 @@ function serveResults ( element, objects ) {
   })
 }
 
-///////////////////////////////////
-// SEARCH /////////////////////////
-///////////////////////////////////
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
   var searchResults = Restaurants.filter(byQuery).filter(byLocation);
-
-  serveResults(roll, searchResults);
 
   function byQuery(obj) {
     var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
@@ -79,11 +69,9 @@ document.getElementById('search').addEventListener('submit', function (evt) {
       return (location.test(obj.address));
     })
   }
-})
 
-///////////////////////////////////
-// SUBMIT REVIEW //////////////////
-///////////////////////////////////
+  serveResults(roll, searchResults);
+})
 document.getElementById('review').addEventListener('submit', function  (evt) {
   evt.preventDefault();
   var submission = {
@@ -97,7 +85,6 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
     tags: cleanTags(document.getElementById('tags').value),
     images: document.getElementById('image').src
   };
-
   function cleanTags(string) {
     // this feature should eventually
     // remove duplicates being input as well
@@ -106,13 +93,12 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
         return string.toLowerCase();
       });
   }
-
   var i = Restaurants.findIndex(function(obj){
     return obj.name == submission.name;
   });
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
-    submission.tags //
+    submission.tags
     .filter(function(tag) {
       return !Restaurants[i].tags.includes(tag);
     }).forEach(function (tag) {
@@ -123,24 +109,15 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
   } else {
     Restaurants.push(submission);
   }
-
-  // reload results
-  serveResults(roll, Restaurants);
-  modalization();
-});
-function modalization (event) {
+  serveResults(document.getElementById('roll'), Restaurants);
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+});
 
-  function toggleClassName(element, value) {
-    var classList = element.className.split(' ');
-    var i = classList.indexOf(value);
-    if ( i < 0 ) {
-      classList.push(value);
-    } else {
-      classList.splice(i,1);
-    }
-    element.className = classList.join(' ');
-  }
-}
-document.getElementById('userReviewButton').addEventListener('click', modalization)
-document.getElementById('userReviewCancelButton').addEventListener('click', modalization)
+document.getElementById('userReviewButton').addEventListener('click', function () {
+  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+});
+document.getElementById('userReviewCancelButton').addEventListener('click', function () {
+  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+});
+
+serveResults(document.getElementById('roll'), Restaurants);
