@@ -21,29 +21,43 @@ var txt = function ( content, parent ) {
   parent.appendChild(node);
   return node;
 }
-var serveResults = function ( parent, objects ) {
+var serveResults = function ( parent, restaurants ) {
   // clear out any results
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild)
   }
-  objects.forEach(function(obj) {
+  restaurants.forEach(function(restaurant) {
+    restaurant.reviews.ideal = (function () {
+      return _.max(restaurant.reviews, function (review) {
+        return (review.ups['helpful'].length + review.ups['witty'].length);
+      });
+    })();
+    restaurant.rating = (function () {
+      var ratings = _.map(restaurant.reviews, function (review) {
+        return review.rating;
+      });
+      var average = Math.floor(_.reduce(ratings,
+        function (s, j) { return s + j; }) / ratings.length);
+
+      return average;
+    })();
     var item = el('div', roll, 'row');
     var mediaLeft = el('div', item, 'hidden-xs col-sm-3 col-md-2');
     var imageWrapper = el('div', mediaLeft, 'h1');
     var image = el('img', imageWrapper, 'img-responsive inline-block');
-        image.src = obj.images[0];
+        image.src = restaurant.images[0];
     var mediaBody = el('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
     var name = el('h1', mediaBody, 'h2');
-               txt(obj.name, name);
+               txt(restaurant.name, name);
                txt(' ', name);
     var rating = el('span', name, 'text-muted h4');
-               txt(obj.reviews[0].rating+'☆', rating);
+               txt(restaurant.rating+'☆', rating);
                txt(' ', name);
     var author = el('span', name, 'text-muted h4');
-               txt(obj.reviews[0].user, author);
-    var review = txt(obj.reviews[0].body, mediaBody);
+               txt(restaurant.reviews.ideal.user, author);
+    var review = txt(restaurant.reviews.ideal.body, mediaBody);
     var tags = el('p', mediaBody);
-    obj.tags.forEach( function (tag, i){
+    restaurant.tags.forEach( function (tag, i){
       var tagElement = el('span', this, 'text-info tag');
       txt(tag, tagElement)
       txt(' ', this);
@@ -80,31 +94,30 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
     reviews: [{
       user: 'defaultUser',
       rating: document.getElementById('rating').value,
-      body: document.getElementById('reviewBody').value
+      body: document.getElementById('reviewBody').value,
+      ups: {
+        helpful: [],
+        witty: [],
+        harsh: []
+      }
     }],
     tags: cleanTags(document.getElementById('tags').value),
     images: document.getElementById('image').src
   };
   function cleanTags(string) {
-    // use _.uniq()?
-    return string.split(/\s*,\s*/ig)
-      .map(function(string){
-        return string.toLowerCase();
-      });
+    tags = string.split(/\s*,\s*/ig);
+    tags = _.map(tags, function(string){
+      return string.toLowerCase();
+    });
+    tags = _.compact(tags);
+    return _.uniq(tags);
   }
-  var i = Restaurants.findIndex(function(obj){
-    return obj.name == submission.name;
+  var i = Restaurants.findIndex(function(restaurant){
+    return restaurant.name == submission.name;
   });
   if (i >= 0) {
     Restaurants[i].reviews.unshift(submission.reviews[0]);
-    submission.tags
-    .filter(function(tag) {
-      return !Restaurants[i].tags.includes(tag);
-    }).forEach(function (tag) {
-      if (tag) {
-        Restaurants[i].tags.push(tag);
-      }
-    })
+    Restaurants[i].tags = _.union(Restaurants[i].tags, submission.tags);
   } else {
     Restaurants.push(submission);
   }
