@@ -1,4 +1,5 @@
 var roll = document.getElementById('roll');
+var lastServed = Restaurants;
 
 var toggleClassName = function (el, value) {
   var classList = el.className.split(' ');
@@ -22,7 +23,6 @@ var txt = function ( content, parent ) {
   return node;
 }
 var serveResults = function ( parent, restaurants ) {
-  // clear out any results
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild)
   }
@@ -38,7 +38,6 @@ var serveResults = function ( parent, restaurants ) {
       });
       var average = Math.floor(_.reduce(ratings,
         function (s, j) { return s + j; }) / ratings.length);
-
       return average;
     })();
     var item = el('div', roll, 'row');
@@ -62,74 +61,36 @@ var serveResults = function ( parent, restaurants ) {
       txt(tag, tagElement)
       txt(' ', this);
     }, tags);
-  })
-}
-
-document.getElementById('search').addEventListener('submit', function (evt) {
-  evt.preventDefault();
-  var searchResults = Restaurants.filter(byQuery).filter(byLocation);
-
-  function byQuery(obj) {
-    var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
-    return queryTerms.some(function (term) {
-      var query = new RegExp(term, 'i');
-      return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
-    })
-  }
-  function byLocation(obj) {
-    var locationTerms = document.getElementById('location').value.split(/[\s,\.]+/);
-    return locationTerms.some(function (term) {
-      var location = new RegExp(term, 'i');
-      return (location.test(obj.address));
-    })
-  }
-
-  serveResults(roll, searchResults);
-})
-document.getElementById('review').addEventListener('submit', function  (evt) {
-  evt.preventDefault();
-  var submission = {
-    name: document.getElementById('restaurant').value,
-    address: document.getElementById('address').value,
-    reviews: [{
-      user: 'defaultUser',
-      rating: document.getElementById('rating').value,
-      body: document.getElementById('reviewBody').value,
-      ups: {
-        helpful: [],
-        witty: [],
-        harsh: []
-      }
-    }],
-    tags: cleanTags(document.getElementById('tags').value),
-    images: document.getElementById('image').src
-  };
-  function cleanTags(string) {
-    tags = string.split(/\s*,\s*/ig);
-    tags = _.map(tags, function(string){
-      return string.toLowerCase();
-    });
-    tags = _.compact(tags);
-    return _.uniq(tags);
-  }
-  var i = Restaurants.findIndex(function(restaurant){
-    return restaurant.name == submission.name;
   });
-  if (i >= 0) {
-    Restaurants[i].reviews.unshift(submission.reviews[0]);
-    Restaurants[i].tags = _.union(Restaurants[i].tags, submission.tags);
-  } else {
-    Restaurants.push(submission);
+  lastServed = restaurants;
+}
+var serveLocation = function ( parent, restaurant ) {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild)
   }
-  serveResults(document.getElementById('roll'), Restaurants);
-  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
-});
-
-document.getElementById('userReviewButton').addEventListener('click', function () {
-  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
-});
-document.getElementById('userReviewCancelButton').addEventListener('click', function () {
-  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
-});
-
-serveResults(document.getElementById('roll'), Restaurants);
+  restaurant.reviews.ideal = (function () {
+    return _.max(restaurant.reviews, function (review) {
+      return (review.ups['helpful'].length + review.ups['witty'].length);
+    });
+  })();
+  restaurant.rating = (function () {
+    var ratings = _.map(restaurant.reviews, function (review) {
+      return review.rating;
+    });
+    var average = Math.floor(_.reduce(ratings,
+      function (s, j) { return s + j; }) / ratings.length);
+    return average;
+  })();
+  var backbutton = el('a', parent, 'btn btn-primary');
+    backbutton.href = '#';
+    backbutton.content = txt('←Back', backbutton)
+    backbutton.addEventListener('click', function(){ serveResults( roll, lastServed ); });
+  var plate = {};
+    plate.title = el('div', parent, 'row');
+    plate.title.name = el('span', plate.title, 'h2');
+    plate.title.name.text = txt(restaurant.name, plate.title.name);
+    plate.title.rating = el('span', plate.title, 'h2 info-text pull-right');
+    plate.title.rating.text = txt(restaurant.rating+'☆', plate.title.rating);
+}
+serveLocation( roll, Restaurants[0] );
+// serveResults( roll, Restaurants );
