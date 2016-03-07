@@ -213,6 +213,6 @@ var Restaurants = [
       }
     ],
     tags: ['tacos','burritos','quesadillas','mexican', 'american','burgers'],
-    images: ['images/tacos.jpg']
+    images: ['images/tacos.jpg','images/sushi.jpg','images/burger.jpg']
   }
-]
+];
