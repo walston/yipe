@@ -17,12 +17,12 @@
         <div class="container">
           <div class="row h1">
             <img class="navbar-brand" src="images/yhelp.svg" alt="Yhelp">
-            <form class="form-inline" id="search" role="search">
+            <form class="form-inline" id="search" role="search" method="post">
               <label class="sr-only" for="query">Search</label>
               <input class="form-control input" id="query" type="text" name="query" placeholder="Search...">
               <label class="sr-only" for="location">... in location</label>
               <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
-              <input class="btn btn-success" type="submit" name="submit" value="Search">
+              <input class="btn btn-success" type="submit" value="Search">
               <a class="btn btn-primary navbar-btn navbar-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span><span class="visible-xs-inline"> Add Review</span></a>
             </form>
           </div>
@@ -70,5 +70,6 @@
       </div><!-- /.container -->
     </div><!-- /#userReviewModal -->
     <script src="js/app.js" charset="utf-8"></script>
+    <script src="js/events.js" charset="utf-8"></script>
   </body>
 </html>

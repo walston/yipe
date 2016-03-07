@@ -4,14 +4,6 @@
   background-position: center;
   background-size: cover;
 }
-.tag {
-  padding: 3px;
-  margin-right: 3px;
-  color: #666;
-  background-color: #EEE;
-  border: 1px solid #DDD;
-  border-radius: 3px;
-}
 #userReviewModal {
   display: block;
   position: fixed;
@@ -24,3 +16,7 @@
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
 }
+.em-top { margin-top: 1em; }
+.en-top { margin-top: .5em; }
+.em-bot { margin-bottom: 1em; }
+.en-bot { margin-bottom: .5em; }
