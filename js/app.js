@@ -35,7 +35,6 @@ var serveResults = function ( parent, restaurants, results ) {
       }).join(', ');
     }
     if (results.near.length > 0) {
-      console.log(results.near.length);
       results.text += ' near '+results.near;
     }
     results.text += ':';
