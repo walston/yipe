@@ -22,9 +22,25 @@ var txt = function ( content, parent ) {
   parent.appendChild(node);
   return node;
 }
-var serveResults = function ( parent, restaurants ) {
+var serveResults = function ( parent, restaurants, results ) {
   while (parent.firstChild) {
     parent.removeChild(parent.firstChild)
+  }
+  if (results) {
+    var searchResults = el('h4', parent, 'text-muted');
+      results.text = 'We found '+ (restaurants.length != 1 ? restaurants.length+' places' : '1 place');
+    if (results.query.length > 0) {
+      results.text += ' matching ' + _.map(results.query, function(term,i) {
+        return '\''+term+'\'';
+      }).join(', ');
+    }
+    if (results.near.length > 0) {
+      console.log(results.near.length);
+      results.text += ' near '+results.near;
+    }
+    results.text += ':';
+    searchResults.text = txt(results.text, searchResults);
+
   }
   _.each(restaurants, function(restaurant, i) {
     restaurant.reviews.ideal = (function () {
@@ -126,5 +142,4 @@ var serveLocation = function ( parent, restaurant ) {
        body.text = txt(review.body, body);
     }, card.reviews);
 }
-var serve =
 serveResults( roll, Restaurants );

@@ -1,23 +1,30 @@
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  var searchResults = Restaurants.filter(byQuery).filter(byLocation);
+  var form = {
+    query: _.filter(document.getElementById('query').value.split(/[\s,\.]+/), function(term) {
+      return term.length > 0;
+    }),
+    near: _.filter(document.getElementById('location').value.split(/[\s,\.]+/), function(term) {
+      return term.length > 0;
+    })
+  };
+  var results = _.chain(Restaurants).filter(byQuery).filter(byLocation).value();
 
   function byQuery(obj) {
-    var queryTerms = document.getElementById('query').value.split(/[\s,\.]+/);
-    return queryTerms.some(function (term) {
+    if (form.query.length == 0) return true;
+    return _.some(form.query, function (term) {
       var query = new RegExp(term, 'i');
       return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
     })
   }
   function byLocation(obj) {
-    var locationTerms = document.getElementById('location').value.split(/[\s,\.]+/);
-    return locationTerms.some(function (term) {
+    if (form.near.length == 0) return true;
+    return _.some(form.near, function (term) {
       var location = new RegExp(term, 'i');
       return (location.test(obj.address));
     })
   }
-
-  serveResults(roll, searchResults);
+  serveResults(roll, results, form);
 })
 document.getElementById('review').addEventListener('submit', function  (evt) {
   evt.preventDefault();
