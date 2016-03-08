@@ -24,7 +24,7 @@ document.getElementById('search').addEventListener('submit', function (evt) {
       return (location.test(obj.address));
     })
   }
-  serveResults(roll, results, form);
+  serveResults(results, form);
 })
 document.getElementById('review').addEventListener('submit', function  (evt) {
   evt.preventDefault();
@@ -61,7 +61,7 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
   } else {
     Restaurants.push(submission);
   }
-  serveResults(document.getElementById('roll'), Restaurants);
+  serveResults(Restaurants);
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
 });
 

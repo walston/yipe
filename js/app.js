@@ -1,4 +1,4 @@
-var Table = document.getElementById('Table');
+var TABLE = document.getElementById('Table');
 var me = 'defaultUser';
 var lastServed = Restaurants;
 
@@ -7,6 +7,7 @@ var clear = function (element) {
     element.removeChild(element.firstChild);
   }
 }
+
 var toggle = function (el, value) {
   var classList = el.className.split(' ');
   var i = classList.indexOf(value);
@@ -17,6 +18,7 @@ var toggle = function (el, value) {
   }
   el.className = classList.join(' ');
 }
+
 /////////////////////////////////////////////
 //// GET RID OF THESE NAMES & FIX THEM //////
 /////////////////////////////////////////////
@@ -26,6 +28,7 @@ var el = function ( tag, parent, classes ) {
   parent.appendChild(node)
   return node;
 }
+
 var txt = function ( content, parent ) {
   var node = document.createTextNode(content);
   parent.appendChild(node);
@@ -34,10 +37,10 @@ var txt = function ( content, parent ) {
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
-var serveResults = function ( parent, restaurants, results ) {
+var serveResults = function(restaurants, results ) {
   // FUNCTION DEFINITIONS =====================
   // return a string for search results header
-  function terms(returned, terms, locations) {
+  function searchTerms(returned, terms, locations) {
     var queryTerms = document.createElement('h3');
     queryTerms.className = 'row text-muted';
     queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
@@ -54,7 +57,7 @@ var serveResults = function ( parent, restaurants, results ) {
     queryTerms.textContent += ':';
     return queryTerms;
   }
-  function plating (restaurant) {
+  function plate(restaurant) {
 
     function reviewRanking(review) {
       helpfuls = review.ups['helpful'].length;
@@ -62,20 +65,23 @@ var serveResults = function ( parent, restaurants, results ) {
       harshes = review.ups['harsh'].length;
       return ((helpfuls * 1.75) + wittys - harshes);
     }
+
     function makeLabel(text) {
-      var span document.createElement('span');
+      var span = document.createElement('span');
       span.className = 'label label-default';
       span.textContent = text;
       return span;
     }
-
     var idealReview = _.max(restaurant.reviews, reviewRanking);
-    var allRatings = _.map(restaurant.reviews, function(review){
-      return review.rating;
-    });
-    var averageRating = Math.floor(_.reduce(ratings, function (sum, index) {
-        return sum + index;
-      }) / allRatings.length);
+    // var allRatings = _.map(restaurant.reviews, function(review){
+    //   return review.rating;
+    // });
+    // var averageRating = Math.floor(_.reduce(restaurant.reviews, function (sum, index) {
+    //     return sum + index;
+    //   }) / allRatings.length);
+    var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
+        return memo + (value.rating / list.length);
+      }, 0));
 
     var dish = document.createElement('div');
     var mediaLeft = document.createElement('div');
@@ -91,74 +97,56 @@ var serveResults = function ( parent, restaurants, results ) {
     var tags = _.map(restaurant.tags, makeLabel); // array of <span>label</span>
 
     dish.className = 'row';
+    dish.setAttribute('data-id',restaurant);
     mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
     imageWrapper.className = 'em-top';
+    image.className = 'img-responsive inline-block';
     image.src = restaurant.images[0];
+    mediaBody.className = 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10';
     nameLink.href = '#';
     rating.className = 'text-muted h4';
     author.className = 'text-muted h4';
 
+    nameLink.textContent = restaurant.name;
+    rating.textContent = averageRating + '★';
+    author.textContent = idealReview.user;
+    review.textContent = idealReview.body;
+
+
     nameLink.addEventListener('click', function () {
       // ### RED ALERT -- REFACTORING WILL BREAK THIS!!
-      serveLocation(Table, Restaurants[i]);
+      serveLocation(TABLE, Restaurants[i]);
     });
 
+    dish.appendChild(mediaLeft);
+    mediaLeft.appendChild(imageWrapper);
+    imageWrapper.appendChild(image);
+    dish.appendChild(mediaBody);
+    mediaBody.appendChild(name);
+    name.appendChild(nameLink);
+    name.appendChild(document.createTextNode(' '));
+    name.appendChild(rating);
+    name.appendChild(document.createTextNode(' '));
+    name.appendChild(author);
+    mediaBody.appendChild(review);
+    mediaBody.appendChild(tagsContainer);
+    _.each(tags, function(tag) {
+      tagsContainer.appendChild(tag);
+      tagsContainer.appendChild(document.createTextNode(' '));
+    });
     return dish;
   }
   // EXECUTION ================================
-  clear(parent);
+  var TABLE = document.getElementById('Table');
+  clear(TABLE);
 
-  // APPEND A SEARCHTERMS HEADING AFTER SEARCH
   if (results) {
-    Table.appendChild(terms(restaurants.length, results.query, results.near));
+    TABLE.appendChild(searchTerms(restaurants.length, results.query, results.near));
   }
-  _.each()
-
-  // OLD CODE =================================
-
-  _.each(restaurants, function(restaurant, i) {
-
-    restaurant.reviews.ideal = (function () {
-      return _.max(restaurant.reviews, function (review) {
-        return (review.ups['helpful'].length + review.ups['witty'].length);
-      });
-    })();
-    restaurant.rating = (function () {
-      var ratings = _.map(restaurant.reviews, function (review) {
-        return review.rating;
-      });
-      var average = Math.floor(_.reduce(ratings,
-        function (s, j) { return s + j; }) / ratings.length);
-      return average;
-    })();
-    var item = el('div', Table, 'row');
-    var mediaLeft = el('div', item, 'hidden-xs col-sm-3 col-md-2');
-    var imageWrapper = el('div', mediaLeft, 'h1');
-    var image = el('img', imageWrapper, 'img-responsive inline-block');
-        image.src = restaurant.images[0];
-    var mediaBody = el('div', item, 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10');
-    var name = el('h1', mediaBody, 'h2');
-    var nameLink = el('a', name)
-        nameLink.href = '#';
-        nameLink.addEventListener('click', function () {
-          serveLocation(Table, Restaurants[i]);
-        });
-               txt(restaurant.name, nameLink);
-               txt(' ', name);
-    var rating = el('span', name, 'text-muted h4');
-               txt(restaurant.rating+'★', rating);
-               txt(' ', name);
-    var author = el('span', name, 'text-muted h4');
-               txt(restaurant.reviews.ideal.user, author);
-    var review = txt(restaurant.reviews.ideal.body, mediaBody);
-    var tags = el('p', mediaBody);
-    _.each(restaurant.tags, function (tag, i){
-      var tagElement = el('span', this, 'label label-default');
-      txt(tag, tagElement)
-      txt(' ', this);
-
-    }, tags);
+  _.each(restaurants, function(restaurant) {
+    TABLE.appendChild(plate(restaurant));
   });
+
   lastServed = restaurants;
 }
 var serveLocation = function ( parent, restaurant ) {
@@ -180,7 +168,7 @@ var serveLocation = function ( parent, restaurant ) {
     localNav.backbutton = el('a', localNav, 'btn btn-primary');
     localNav.backbutton.href = '#';
     localNav.backbutton.content = txt('← Back', localNav.backbutton)
-    localNav.backbutton.addEventListener('click', function(){ serveResults( Table, lastServed ); });
+    localNav.backbutton.addEventListener('click', function(){ serveResults( TABLE, lastServed ); });
   var card = el('div', parent, 'row em-top');
     card.head = el('div', card, 'col-xs-12');
     card.head.name = el('h2', card.head);
@@ -234,4 +222,4 @@ var serveLocation = function ( parent, restaurant ) {
       votes();
     }, card.reviews);
 }
-serveResults( Table, Restaurants );
+serveResults(Restaurants, undefined);
