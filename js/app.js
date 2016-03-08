@@ -2,7 +2,12 @@ var roll = document.getElementById('roll');
 var me = 'defaultUser';
 var lastServed = Restaurants;
 
-var toggleClassName = function (el, value) {
+var clear = function (element) {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+}
+var toggle = function (el, value) {
   var classList = el.className.split(' ');
   var i = classList.indexOf(value);
   if ( i < 0 ) {
@@ -24,9 +29,7 @@ var txt = function ( content, parent ) {
   return node;
 }
 var serveResults = function ( parent, restaurants, results ) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild)
-  }
+  clear(parent);
   if (results) {
     var searchResults = el('h4', parent, 'text-muted');
       results.text = 'We found '+ (restaurants.length != 1 ? restaurants.length+' places' : '1 place');
@@ -87,9 +90,7 @@ var serveResults = function ( parent, restaurants, results ) {
   lastServed = restaurants;
 }
 var serveLocation = function ( parent, restaurant ) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild)
-  }
+  clear(parent);
   restaurant.reviews.ideal = (function () {
     return _.max(restaurant.reviews, function (review) {
       return (review.ups['helpful'].length + review.ups['witty'].length);
@@ -141,8 +142,10 @@ var serveLocation = function ( parent, restaurant ) {
       var body = el('div', self);
         body.text = txt(review.body, body);
       var ups = el('p', self);
-      ups.addEventListener('click', function (event) {
-        var key = event.target.getAttribute('data-key');
+      var votes = function() {
+        while (ups.firstChild) {
+          ups.removeChild(ups.firstChild);
+        }
         var toggleUser = function (array, user) {
           if (_.contains(array, user)){
             return _.without(array, user);
@@ -150,17 +153,9 @@ var serveLocation = function ( parent, restaurant ) {
             return _.union(array, [user]);
           };
         }
-        toggleUser(review.ups[key], me);
-        votes();
-      });
-      var votes = function() {
-        while (ups.firstChild) {
-          ups.removeChild(ups.firstChild);
-        };
         _.mapObject(review.ups, function(voters, key){
-          var up = el('span', this, 'label label-warning');
-          up.setAttribute('data-key', key);
-          up.text = txt(key+' ('+review.ups[key].length+')', up);
+          var it = el('span', this, 'label label-warning');
+          it.text = txt(key+' ('+review.ups[key].length+')', it);
           txt(' ', this);
         }, ups);
       };
