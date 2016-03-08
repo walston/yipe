@@ -1,4 +1,5 @@
 var roll = document.getElementById('roll');
+var me = 'defaultUser';
 var lastServed = Restaurants;
 
 var toggleClassName = function (el, value) {
@@ -130,7 +131,7 @@ var serveLocation = function ( parent, restaurant ) {
     }, card.head.imagery);
     card.reviews = el('div', card, 'row en-top');
     _.each(restaurant.reviews, function (review, i) {
-      var self = el('div', this, 'col-xs-12');
+      var self = el('div', this, 'col-xs-12 em-bot');
       var info = el('div', self);
         info.author = el('span', info, 'h4 text-primary');
         info.author.text = txt(review.user, info.author);
@@ -138,7 +139,32 @@ var serveLocation = function ( parent, restaurant ) {
         info.rating = el('span', info, 'h4 text-muted');
         info.rating.text = txt(review.rating+'★', info.rating);
       var body = el('div', self);
-       body.text = txt(review.body, body);
+        body.text = txt(review.body, body);
+      var ups = el('p', self);
+      ups.addEventListener('click', function (event) {
+        var key = event.target.getAttribute('data-key');
+        var toggleUser = function (array, user) {
+          if (_.contains(array, user)){
+            return _.without(array, user);
+          } else {
+            return _.union(array, [user]);
+          };
+        }
+        toggleUser(review.ups[key], me);
+        votes();
+      });
+      var votes = function() {
+        while (ups.firstChild) {
+          ups.removeChild(ups.firstChild);
+        };
+        _.mapObject(review.ups, function(voters, key){
+          var up = el('span', this, 'label label-warning');
+          up.setAttribute('data-key', key);
+          up.text = txt(key+' ('+review.ups[key].length+')', up);
+          txt(' ', this);
+        }, ups);
+      };
+      votes();
     }, card.reviews);
 }
 serveResults( roll, Restaurants );
