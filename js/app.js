@@ -17,6 +17,9 @@ var toggle = function (el, value) {
   }
   el.className = classList.join(' ');
 }
+/////////////////////////////////////////////
+//// GET RID OF THESE NAMES & FIX THEM //////
+/////////////////////////////////////////////
 var el = function ( tag, parent, classes ) {
   var node = document.createElement(tag);
   if (classes) { node.className = classes; }
@@ -28,23 +31,40 @@ var txt = function ( content, parent ) {
   parent.appendChild(node);
   return node;
 }
-var serveResults = function ( parent, restaurants, results ) {
-  clear(parent);
-  if (results) {
-    var searchResults = el('h4', parent, 'text-muted');
-      results.text = 'We found '+ (restaurants.length != 1 ? restaurants.length+' places' : '1 place');
-    if (results.query.length > 0) {
-      results.text += ' matching ' + _.map(results.query, function(term,i) {
-        return '\''+term+'\'';
-      }).join(', ');
-    }
-    if (results.near.length > 0) {
-      results.text += ' near '+results.near;
-    }
-    results.text += ':';
-    searchResults.text = txt(results.text, searchResults);
+/////////////////////////////////////////////
+/////////////////////////////////////////////
 
+var serveResults = function ( parent, restaurants, results ) {
+  // FUNCTION DEFINITIONS =====================
+  // return a string for search results header
+  function terms(returned, terms, locations) {
+    var queryTerms = document.createElement('h3');
+    queryTerms.className = 'row text-muted';
+    queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
+    if (terms.length > 0) {
+      queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
+        // wrap all the query terms in quote marks
+        return '\''+term+'\'';
+      })
+      .join(', ');
+    }
+    if (locations.length > 0) {
+      queryTerms.textContent += ' near ' + locations.join(', ');
+    }
+    queryTerms.textContent += ':';
+    return queryTerms;
   }
+
+  // EXECUTION ================================
+  clear(parent);
+
+  // APPEND A SEARCHTERMS HEADING AFTER SEARCH
+  if (results) {
+    roll.appendChild(terms(restaurants.length, results.query, results.near));
+  }
+
+  // OLD CODE =================================
+
   _.each(restaurants, function(restaurant, i) {
     restaurant.reviews.ideal = (function () {
       return _.max(restaurant.reviews, function (review) {
