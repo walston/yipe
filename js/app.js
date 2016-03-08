@@ -2,83 +2,42 @@ var TABLE = document.getElementById('Table');
 var me = 'defaultUser';
 var lastServed = Restaurants;
 
-var clear = function (element) {
+function clear(element) {
   while (element.firstChild) {
     element.removeChild(element.firstChild);
   }
 }
 
-var toggle = function (el, value) {
-  var classList = el.className.split(' ');
+function makeLabel(text) {
+  var span = document.createElement('span');
+  span.className = 'label label-default';
+  span.textContent = text;
+  return span;
+}
+
+function reviewRanking(review) {
+  helpfuls = review.ups['helpful'].length;
+  wittys = review.ups['witty'].length;
+  harshes = review.ups['harsh'].length;
+  return ((helpfuls * 1.75) + wittys - harshes);
+}
+
+function toggle(element, value) {
+  var classList = element.className.split(' ');
   var i = classList.indexOf(value);
   if ( i < 0 ) {
     classList.push(value);
   } else {
     classList.splice(i,1);
   }
-  el.className = classList.join(' ');
+  element.className = classList.join(' ');
 }
 
-/////////////////////////////////////////////
-//// GET RID OF THESE NAMES & FIX THEM //////
-/////////////////////////////////////////////
-var el = function ( tag, parent, classes ) {
-  var node = document.createElement(tag);
-  if (classes) { node.className = classes; }
-  parent.appendChild(node)
-  return node;
-}
+function serveResults(restaurants, results ) {
 
-var txt = function ( content, parent ) {
-  var node = document.createTextNode(content);
-  parent.appendChild(node);
-  return node;
-}
-/////////////////////////////////////////////
-/////////////////////////////////////////////
-
-var serveResults = function(restaurants, results ) {
-  // FUNCTION DEFINITIONS =====================
-  // return a string for search results header
-  function searchTerms(returned, terms, locations) {
-    var queryTerms = document.createElement('h3');
-    queryTerms.className = 'row text-muted';
-    queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
-    if (terms.length > 0) {
-      queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
-        // wrap all the query terms in quote marks
-        return '\''+term+'\'';
-      })
-      .join(', ');
-    }
-    if (locations.length > 0) {
-      queryTerms.textContent += ' near ' + locations.join(', ');
-    }
-    queryTerms.textContent += ':';
-    return queryTerms;
-  }
   function plate(restaurant) {
 
-    function reviewRanking(review) {
-      helpfuls = review.ups['helpful'].length;
-      wittys = review.ups['witty'].length;
-      harshes = review.ups['harsh'].length;
-      return ((helpfuls * 1.75) + wittys - harshes);
-    }
-
-    function makeLabel(text) {
-      var span = document.createElement('span');
-      span.className = 'label label-default';
-      span.textContent = text;
-      return span;
-    }
     var idealReview = _.max(restaurant.reviews, reviewRanking);
-    // var allRatings = _.map(restaurant.reviews, function(review){
-    //   return review.rating;
-    // });
-    // var averageRating = Math.floor(_.reduce(restaurant.reviews, function (sum, index) {
-    //     return sum + index;
-    //   }) / allRatings.length);
     var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
         return memo + (value.rating / list.length);
       }, 0));
@@ -112,10 +71,9 @@ var serveResults = function(restaurants, results ) {
     author.textContent = idealReview.user;
     review.textContent = idealReview.body;
 
-
     nameLink.addEventListener('click', function () {
       // ### RED ALERT -- REFACTORING WILL BREAK THIS!!
-      serveLocation(TABLE, Restaurants[i]);
+      serveLocation(restaurant);
     });
 
     dish.appendChild(mediaLeft);
@@ -136,90 +94,146 @@ var serveResults = function(restaurants, results ) {
     });
     return dish;
   }
-  // EXECUTION ================================
+
+  function searchTerms(returned, terms, locations) {
+    var queryTerms = document.createElement('h3');
+    queryTerms.className = 'row text-muted';
+    queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
+    if (terms.length > 0) {
+      queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
+        return '\''+term+'\'';
+      })
+      .join(', ');
+    }
+    if (locations.length > 0) {
+      queryTerms.textContent += ' near ' + locations.join(', ');
+    }
+    queryTerms.textContent += ':';
+    return queryTerms;
+  }
+
   var TABLE = document.getElementById('Table');
   clear(TABLE);
-
   if (results) {
     TABLE.appendChild(searchTerms(restaurants.length, results.query, results.near));
   }
-  _.each(restaurants, function(restaurant) {
+  restaurants.forEach(function(restaurant) {
     TABLE.appendChild(plate(restaurant));
   });
-
   lastServed = restaurants;
 }
-var serveLocation = function ( parent, restaurant ) {
-  clear(parent);
-  restaurant.reviews.ideal = (function () {
-    return _.max(restaurant.reviews, function (review) {
-      return (review.ups['helpful'].length + review.ups['witty'].length);
+
+function serveLocation(restaurant) {
+  function localNav() {
+    var container = document.createElement('div');
+    var back = document.createElement('a');
+
+    container.className = 'row em-bot';
+    back.className = 'btn btn-primary';
+    back.href = '#'
+    back.textContent = '← Back'
+    back.addEventListener('click', function () {
+      serveResults(lastServed);
     });
-  })();
-  restaurant.rating = (function () {
-    var ratings = _.map(restaurant.reviews, function (review) {
-      return review.rating;
+    container.appendChild(back);
+    return container;
+  }
+
+  function reviewElementer(review) {
+    var container = document.createElement('div');
+    var info = document.createElement('p');
+    var author = document.createElement('span');
+    var rating = document.createElement('span');
+    var body = document.createElement('p');
+    var upsContainer = document.createElement('p');
+    var ups = _.mapObject(review.ups, function(voters, key){
+      var label = makeLabel(key + ' (' + voters.length + ')');
+      label.className = 'label label-warning';
+      return label;
     });
-    var average = Math.floor(_.reduce(ratings,
-      function (s, j) { return s + j; }) / ratings.length);
-    return average;
-  })();
-  var localNav = el('div', parent, 'row em-bot');
-    localNav.backbutton = el('a', localNav, 'btn btn-primary');
-    localNav.backbutton.href = '#';
-    localNav.backbutton.content = txt('← Back', localNav.backbutton)
-    localNav.backbutton.addEventListener('click', function(){ serveResults( TABLE, lastServed ); });
-  var card = el('div', parent, 'row em-top');
-    card.head = el('div', card, 'col-xs-12');
-    card.head.name = el('h2', card.head);
-    card.head.name.text = txt(restaurant.name, card.head.name);
-    card.head.name.spacing = txt(' ', card.head.name);
-    card.head.rating = el('span', card.head.name, 'text-muted');
-    card.head.rating.text = txt(restaurant.rating+'★', card.head.rating);
-    card.head.info = el('div', card.head);
-    card.head.info.address = el('p', card.head.info, 'text-info');
-    card.head.info.address.text = txt(restaurant.address, card.head.info.address);
-    card.head.info.tags = el('p', card.head.info, 'en-top');
-    _.each(restaurant.tags, function (tag, i){
-      var tagElement = el('span', this, 'label label-default');
-      txt(tag, tagElement)
-      txt(' ', this);
-    }, card.head.info.tags);
-    card.head.imagery = el('div', card.head);
-    _.each(restaurant.images, function(path, i) {
-      var image = el('img', this, 'img-responsive thumbnail col-xs-2');
-       image.src = path;
-    }, card.head.imagery);
-    card.reviews = el('div', card, 'row en-top');
-    _.each(restaurant.reviews, function (review, i) {
-      var self = el('div', this, 'col-xs-12 em-bot');
-      var info = el('div', self);
-        info.author = el('span', info, 'h4 text-primary');
-        info.author.text = txt(review.user, info.author);
-        info.spacing = txt(' ', info);
-        info.rating = el('span', info, 'h4 text-muted');
-        info.rating.text = txt(review.rating+'★', info.rating);
-      var body = el('div', self);
-        body.text = txt(review.body, body);
-      var ups = el('p', self);
-      var votes = function() {
-        while (ups.firstChild) {
-          ups.removeChild(ups.firstChild);
-        }
-        var toggleUser = function (array, user) {
-          if (_.contains(array, user)){
-            return _.without(array, user);
-          } else {
-            return _.union(array, [user]);
-          };
-        }
-        _.mapObject(review.ups, function(voters, key){
-          var it = el('span', this, 'label label-warning');
-          it.text = txt(key+' ('+review.ups[key].length+')', it);
-          txt(' ', this);
-        }, ups);
-      };
-      votes();
-    }, card.reviews);
+
+    author.className = 'h4 text-muted';
+    rating.className = 'h4 text-muted';
+
+    author.textContent = review.user;
+    rating.textContent = review.rating + '★';
+    body.textContent = review.body;
+
+    container.appendChild(info);
+    info.appendChild(author);
+    info.appendChild(document.createTextNode(' '));
+    info.appendChild(rating);
+    container.appendChild(body);
+    container.appendChild(upsContainer);
+    _.each( ups, function(label) {
+      upsContainer.appendChild(label);
+      upsContainer.appendChild(document.createTextNode(' '));
+    });
+    return container;
+  }
+
+  function mainCourse(restaurant) {
+    var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
+        return memo + (value.rating / list.length);
+      }, 0));
+    var sortedReviews = _.sortBy(restaurant.reviews, reviewRanking);
+    var card = document.createElement('div');
+    var head = document.createElement('div');
+    var name = document.createElement('h2');
+    var rating = document.createElement('span');
+    var info = document.createElement('div');
+    var address = document.createElement('p');
+    var tagsContainer = document.createElement('p');
+    var tags = _.map(restaurant.tags, makeLabel);
+    var imageContainer = document.createElement('div');
+    var images = _.map(restaurant.images, function(path) {
+      var image = document.createElement('img')
+        image.className = 'img-responsive thumbnail col-xs-2';
+        image.src = path;
+        return image;
+      });
+    var reviewsContainer = document.createElement('div');
+    var reviews = _.map(sortedReviews, reviewElementer);
+
+    card.className = 'row';
+    head.className = 'container';
+    name.className = 'row';
+    rating.className = 'text-muted';
+    info.className = 'row';
+    address.className = 'text-info';
+    tagsContainer.className = 'row';
+    imageContainer.className = 'row';
+
+    name.textContent = restaurant.name;
+    rating.textContent = averageRating + '★';
+    address.textContent = restaurant.address;
+
+    card.appendChild(head);
+    head.appendChild(name);
+    name.appendChild(document.createTextNode(' '));
+    head.appendChild(info);
+    info.appendChild(address);
+    head.appendChild(tagsContainer);
+    tags.forEach(function(tag) {
+      tagsContainer.appendChild(tag);
+      tagsContainer.appendChild(document.createTextNode(' '));
+    });
+    head.appendChild(imageContainer);
+    images.forEach(function(image){
+      imageContainer.appendChild(image);
+      imageContainer.appendChild(document.createTextNode(' '));
+    });
+    card.appendChild(reviewsContainer);
+    reviews.forEach(function(review) {
+      reviewsContainer.appendChild(review);
+    });
+    return card;
+  }
+
+  TABLE = document.getElementById('Table');
+  clear(TABLE);
+  TABLE.appendChild(localNav());
+  TABLE.appendChild(mainCourse(restaurant));
 }
+
 serveResults(Restaurants, undefined);

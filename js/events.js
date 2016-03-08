@@ -66,8 +66,8 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
 });
 
 document.getElementById('userReviewButton').addEventListener('click', function () {
-  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+  toggle(document.getElementById('userReviewModal'), 'hidden');
 });
 document.getElementById('userReviewCancelButton').addEventListener('click', function () {
-  toggleClassName(document.getElementById('userReviewModal'), 'hidden');
+  toggle(document.getElementById('userReviewModal'), 'hidden');
 });
