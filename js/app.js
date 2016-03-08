@@ -1,4 +1,4 @@
-var roll = document.getElementById('roll');
+var Table = document.getElementById('Table');
 var me = 'defaultUser';
 var lastServed = Restaurants;
 
@@ -54,18 +54,70 @@ var serveResults = function ( parent, restaurants, results ) {
     queryTerms.textContent += ':';
     return queryTerms;
   }
+  function plating (restaurant) {
 
+    function reviewRanking(review) {
+      helpfuls = review.ups['helpful'].length;
+      wittys = review.ups['witty'].length;
+      harshes = review.ups['harsh'].length;
+      return ((helpfuls * 1.75) + wittys - harshes);
+    }
+    function makeLabel(text) {
+      var span document.createElement('span');
+      span.className = 'label label-default';
+      span.textContent = text;
+      return span;
+    }
+
+    var idealReview = _.max(restaurant.reviews, reviewRanking);
+    var allRatings = _.map(restaurant.reviews, function(review){
+      return review.rating;
+    });
+    var averageRating = Math.floor(_.reduce(ratings, function (sum, index) {
+        return sum + index;
+      }) / allRatings.length);
+
+    var dish = document.createElement('div');
+    var mediaLeft = document.createElement('div');
+    var imageWrapper = document.createElement('div');
+    var image = document.createElement('img');
+    var mediaBody = document.createElement('div');
+    var name = document.createElement('h1');
+    var nameLink = document.createElement('a');
+    var rating = document.createElement('span');
+    var author = document.createElement('span');
+    var review = document.createElement('p');
+    var tagsContainer = document.createElement('p');
+    var tags = _.map(restaurant.tags, makeLabel); // array of <span>label</span>
+
+    dish.className = 'row';
+    mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
+    imageWrapper.className = 'em-top';
+    image.src = restaurant.images[0];
+    nameLink.href = '#';
+    rating.className = 'text-muted h4';
+    author.className = 'text-muted h4';
+
+    nameLink.addEventListener('click', function () {
+      // ### RED ALERT -- REFACTORING WILL BREAK THIS!!
+      serveLocation(Table, Restaurants[i]);
+    });
+
+    return dish;
+  }
   // EXECUTION ================================
   clear(parent);
 
   // APPEND A SEARCHTERMS HEADING AFTER SEARCH
   if (results) {
-    roll.appendChild(terms(restaurants.length, results.query, results.near));
+    Table.appendChild(terms(restaurants.length, results.query, results.near));
   }
+  _.each()
 
   // OLD CODE =================================
 
   _.each(restaurants, function(restaurant, i) {
+
     restaurant.reviews.ideal = (function () {
       return _.max(restaurant.reviews, function (review) {
         return (review.ups['helpful'].length + review.ups['witty'].length);
@@ -79,7 +131,7 @@ var serveResults = function ( parent, restaurants, results ) {
         function (s, j) { return s + j; }) / ratings.length);
       return average;
     })();
-    var item = el('div', roll, 'row');
+    var item = el('div', Table, 'row');
     var mediaLeft = el('div', item, 'hidden-xs col-sm-3 col-md-2');
     var imageWrapper = el('div', mediaLeft, 'h1');
     var image = el('img', imageWrapper, 'img-responsive inline-block');
@@ -89,7 +141,7 @@ var serveResults = function ( parent, restaurants, results ) {
     var nameLink = el('a', name)
         nameLink.href = '#';
         nameLink.addEventListener('click', function () {
-          serveLocation(roll, Restaurants[i]);
+          serveLocation(Table, Restaurants[i]);
         });
                txt(restaurant.name, nameLink);
                txt(' ', name);
@@ -128,7 +180,7 @@ var serveLocation = function ( parent, restaurant ) {
     localNav.backbutton = el('a', localNav, 'btn btn-primary');
     localNav.backbutton.href = '#';
     localNav.backbutton.content = txt('← Back', localNav.backbutton)
-    localNav.backbutton.addEventListener('click', function(){ serveResults( roll, lastServed ); });
+    localNav.backbutton.addEventListener('click', function(){ serveResults( Table, lastServed ); });
   var card = el('div', parent, 'row em-top');
     card.head = el('div', card, 'col-xs-12');
     card.head.name = el('h2', card.head);
@@ -182,4 +234,4 @@ var serveLocation = function ( parent, restaurant ) {
       votes();
     }, card.reviews);
 }
-serveResults( roll, Restaurants );
+serveResults( Table, Restaurants );
