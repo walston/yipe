@@ -1,6 +1,6 @@
 var TABLE = document.getElementById('Table');
 var me = 'defaultUser';
-var lastServed = Restaurants;
+var lastServed = RESTAURANTS;
 
 function clear(element) {
   while (element.firstChild) {
@@ -33,9 +33,17 @@ function toggle(element, value) {
   element.className = classList.join(' ');
 }
 
-function toggleUser(vote, user) {
-
+function vote(restaurantId, reviewId, tag, node) {
+  var ballotBox = RESTAURANTS[restaurantId].reviews[reviewId].ups[tag];
+  var i = ballotBox.indexOf(me)
+  if (i < 0) {
+    ballotBox.push(me);
+  } else {
+    ballotBox.splice(i, 1);
+  }
+  // refresh that particular spot
 }
+
 function serveResults(restaurants, results ) {
 
   function plate(restaurant) {
@@ -152,11 +160,10 @@ function serveLocation(restaurant) {
       // ??????????????????????
       var label = makeLabel(key + ' (' + voters.length + ')');
       label.className = 'btn btn-xs btn-default clickable';
-      label.setAttribute('data-id', review + key);
-      label.addEventListener('click', function(e) {
-        console.log(e.target);
-        console.log(restaurant);
-      })
+      label.setAttribute('data-method', 'vote');
+      label.setAttribute('data-restaurantId', restaurant.restaurantId);
+      label.setAttribute('data-reviewId', review.reviewId);
+      label.setAttribute('data-tag', key);
       return label;
     });
 
@@ -245,4 +252,4 @@ function serveLocation(restaurant) {
   TABLE.appendChild(mainCourse(restaurant));
 }
 
-serveResults(Restaurants, undefined);
+serveResults(RESTAURANTS, undefined);

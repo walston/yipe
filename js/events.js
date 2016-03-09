@@ -1,3 +1,11 @@
+document.body.addEventListener('click', function (e) {
+  if (e.target.getAttribute('data-method') == 'vote') {
+    vote(Number.parseInt(e.target.getAttribute('data-restaurantId')),
+      Number.parseInt(e.target.getAttribute('data-reviewId')),
+      e.target.getAttribute('data-tag'));
+  }
+});
+
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
   var form = {
@@ -8,7 +16,7 @@ document.getElementById('search').addEventListener('submit', function (evt) {
       return term.length > 0;
     })
   };
-  var results = _.chain(Restaurants).filter(byQuery).filter(byLocation).value();
+  var results = _.chain(RESTAURANTS).filter(byQuery).filter(byLocation).value();
 
   function byQuery(obj) {
     if (form.query.length == 0) return true;
@@ -26,6 +34,7 @@ document.getElementById('search').addEventListener('submit', function (evt) {
   }
   serveResults(results, form);
 })
+
 document.getElementById('review').addEventListener('submit', function  (evt) {
   evt.preventDefault();
   var submission = {
@@ -52,22 +61,23 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
     tags = _.compact(tags);
     return _.uniq(tags);
   }
-  var i = Restaurants.findIndex(function(restaurant){
+  var i = RESTAURANTS.findIndex(function(restaurant){
     return restaurant.name == submission.name;
   });
   if (i >= 0) {
-    Restaurants[i].reviews.unshift(submission.reviews[0]);
-    Restaurants[i].tags = _.union(Restaurants[i].tags, submission.tags);
+    RESTAURANTS[i].reviews.unshift(submission.reviews[0]);
+    RESTAURANTS[i].tags = _.union(RESTAURANTS[i].tags, submission.tags);
   } else {
-    Restaurants.push(submission);
+    RESTAURANTS.push(submission);
   }
-  serveResults(Restaurants);
+  serveResults(RESTAURANTS);
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
 });
 
 document.getElementById('userReviewButton').addEventListener('click', function () {
   toggle(document.getElementById('userReviewModal'), 'hidden');
 });
+
 document.getElementById('userReviewCancelButton').addEventListener('click', function () {
   toggle(document.getElementById('userReviewModal'), 'hidden');
 });
