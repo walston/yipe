@@ -8,7 +8,7 @@ var User = {
   BarneyStinson: 'BarneyStinson'
 }
 
-var Restaurants = [
+var RESTAURANTS = [
   {
     name: 'Mo Better Burgers',
     restaurantId: 0,

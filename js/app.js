@@ -7,15 +7,19 @@ function check() {
   for (i=0;i<suspects.length;i++){
     var suspect = suspects[i];
     if (suspect.getAttribute('data-method') == 'vote'){
-      var restaurant = RESTAURANTS[suspect.getAttribute('data-restaurantId')];
-      var review = restaurant.reviews[suspect.getAttribute('data-reviewId')];
-      var voteKey = review.ups[suspect.getAttribute('data-key')];
-      redraw = (voteKey.length != suspect.getAttribute('data-value'));
-      if (redraw){
-        var newVotes = votes(restaurant, review);
-        suspect.parentElement.parentElement.replaceChild(newVotes ,suspect.parentElement)
-      }
+      checkVotes(suspect);
     }
+  }
+}
+
+function checkVotes (element) {
+  var restaurant = RESTAURANTS[element.getAttribute('data-restaurantid')];
+  var review = restaurant.reviews[element.getAttribute('data-reviewid')];
+  var ups = review.ups[element.getAttribute('data-key')];
+  redraw = (ups.length != element.getAttribute('data-value'));
+  if (redraw){
+    var newVotes = votes(restaurant, review);
+    element.parentElement.parentElement.replaceChild(newVotes ,element.parentElement);
   }
 }
 
@@ -76,8 +80,8 @@ function votes(restaurant, review) {
       button.className = 'btn btn-xs btn-default';
     }
     button.setAttribute('data-method', 'vote');
-    button.setAttribute('data-restaurantId', restaurant.restaurantId);
-    button.setAttribute('data-reviewId', review.reviewId);
+    button.setAttribute('data-restaurantid', restaurant.restaurantId);
+    button.setAttribute('data-reviewid', review.reviewId);
     button.setAttribute('data-key', key);
     button.setAttribute('data-value', voters.length);
     return button;
