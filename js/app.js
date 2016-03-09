@@ -33,15 +33,16 @@ function toggle(element, value) {
   element.className = classList.join(' ');
 }
 
+function toggleUser(vote, user) {
+
+}
 function serveResults(restaurants, results ) {
 
   function plate(restaurant) {
-
     var idealReview = _.max(restaurant.reviews, reviewRanking);
     var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
         return memo + (value.rating / list.length);
       }, 0));
-
     var dish = document.createElement('div');
     var mediaLeft = document.createElement('div');
     var imageWrapper = document.createElement('div');
@@ -140,6 +141,7 @@ function serveLocation(restaurant) {
   }
 
   function reviewElementer(review) {
+    var restaurant = this; // passed in via _.map(x,x,[context])
     var container = document.createElement('div');
     var info = document.createElement('p');
     var author = document.createElement('span');
@@ -147,11 +149,18 @@ function serveLocation(restaurant) {
     var body = document.createElement('p');
     var upsContainer = document.createElement('p');
     var ups = _.mapObject(review.ups, function(voters, key){
+      // ??????????????????????
       var label = makeLabel(key + ' (' + voters.length + ')');
-      label.className = 'label label-warning';
+      label.className = 'btn btn-xs btn-default clickable';
+      label.setAttribute('data-id', review + key);
+      label.addEventListener('click', function(e) {
+        console.log(e.target);
+        console.log(restaurant);
+      })
       return label;
     });
 
+    container.className = 'em-bot';
     author.className = 'h4 text-muted';
     rating.className = 'h4 text-muted';
 
@@ -193,7 +202,7 @@ function serveLocation(restaurant) {
         return image;
       });
     var reviewsContainer = document.createElement('div');
-    var reviews = _.map(sortedReviews, reviewElementer);
+    var reviews = _.map(sortedReviews, reviewElementer, restaurant);
 
     card.className = 'row';
     head.className = 'container';
