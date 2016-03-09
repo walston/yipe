@@ -1,8 +1,12 @@
+window.setInterval(check, 500);
+
 document.body.addEventListener('click', function (e) {
   if (e.target.getAttribute('data-method') == 'vote') {
-    vote(Number.parseInt(e.target.getAttribute('data-restaurantId')),
-      Number.parseInt(e.target.getAttribute('data-reviewId')),
-      e.target.getAttribute('data-tag'));
+    var restaurantId = Number.parseInt(e.target.getAttribute('data-restaurantId'));
+    var reviewId = Number.parseInt(e.target.getAttribute('data-reviewId'));
+    var upsKey = e.target.getAttribute('data-key');
+    vote(restaurantId, reviewId, upsKey);
+    toggle(e.target, 'change');
   }
 });
 

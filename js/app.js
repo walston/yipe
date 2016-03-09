@@ -2,9 +2,30 @@ var TABLE = document.getElementById('Table');
 var me = 'defaultUser';
 var lastServed = RESTAURANTS;
 
-function clear(element) {
-  while (element.firstChild) {
-    element.removeChild(element.firstChild);
+function check() {
+  var suspects = document.getElementsByClassName('change');
+  for (i=0;i<suspects.length;i++){
+    var suspect = suspects[i];
+    if (suspect.getAttribute('data-method') == 'vote'){
+      var restaurant = RESTAURANTS[suspect.getAttribute('data-restaurantId')];
+      var review = restaurant.reviews[suspect.getAttribute('data-reviewId')];
+      var voteKey = review.ups[suspect.getAttribute('data-key')];
+      redraw = (voteKey.length != suspect.getAttribute('data-value'));
+      if (redraw){
+        var newVotes = votes(restaurant, review);
+        suspect.parentElement.parentElement.replaceChild(newVotes ,suspect.parentElement)
+      }
+    }
+  }
+}
+
+function clear(element, parent) {
+  if (parent != true){
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+  } else {
+    element.parentElement.removeChild(element);
   }
 }
 
@@ -33,7 +54,7 @@ function toggle(element, value) {
   element.className = classList.join(' ');
 }
 
-function vote(restaurantId, reviewId, tag, node) {
+function vote(restaurantId, reviewId, tag) {
   var ballotBox = RESTAURANTS[restaurantId].reviews[reviewId].ups[tag];
   var i = ballotBox.indexOf(me)
   if (i < 0) {
@@ -41,7 +62,32 @@ function vote(restaurantId, reviewId, tag, node) {
   } else {
     ballotBox.splice(i, 1);
   }
-  // refresh that particular spot
+}
+
+function votes(restaurant, review) {
+  var container = document.createElement('p');
+  container.setAttribute('data-model', 'votes');
+  var buttons = _.map(review.ups, function(voters, key){
+    var button = document.createElement('span');
+    button.textContent = key + ' (' + voters.length + ')'
+    if (voters.includes(me)) {
+      button.className = 'btn btn-xs btn-success';
+    } else{
+      button.className = 'btn btn-xs btn-default';
+    }
+    button.setAttribute('data-method', 'vote');
+    button.setAttribute('data-restaurantId', restaurant.restaurantId);
+    button.setAttribute('data-reviewId', review.reviewId);
+    button.setAttribute('data-key', key);
+    button.setAttribute('data-value', voters.length);
+    return button;
+  });
+  buttons.forEach(function(button) {
+    container.appendChild(button);
+    container.appendChild(document.createTextNode(' '));
+  });
+
+  return container;
 }
 
 function serveResults(restaurants, results ) {
@@ -149,23 +195,13 @@ function serveLocation(restaurant) {
   }
 
   function reviewElementer(review) {
-    var restaurant = this; // passed in via _.map(x,x,[context])
+    var restaurant = this; // passed in via _.map(x,x,[context]) ?? do we still need this??
     var container = document.createElement('div');
     var info = document.createElement('p');
     var author = document.createElement('span');
     var rating = document.createElement('span');
     var body = document.createElement('p');
-    var upsContainer = document.createElement('p');
-    var ups = _.mapObject(review.ups, function(voters, key){
-      // ??????????????????????
-      var label = makeLabel(key + ' (' + voters.length + ')');
-      label.className = 'btn btn-xs btn-default clickable';
-      label.setAttribute('data-method', 'vote');
-      label.setAttribute('data-restaurantId', restaurant.restaurantId);
-      label.setAttribute('data-reviewId', review.reviewId);
-      label.setAttribute('data-tag', key);
-      return label;
-    });
+    var upsContainer = votes(restaurant, review);
 
     container.className = 'em-bot';
     author.className = 'h4 text-muted';
@@ -181,10 +217,6 @@ function serveLocation(restaurant) {
     info.appendChild(rating);
     container.appendChild(body);
     container.appendChild(upsContainer);
-    _.each( ups, function(label) {
-      upsContainer.appendChild(label);
-      upsContainer.appendChild(document.createTextNode(' '));
-    });
     return container;
   }
 
