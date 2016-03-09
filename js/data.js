@@ -10,83 +10,106 @@ var User = {
 
 var Restaurants = [
   {
-    name: 'Ionian Burger #1',
-    address: '1001 First St. City, CA 90001',
+    name: 'Mo Better Burgers',
+    restaurantId: 0,
+    address: '1234 Civic Center Dr. City, CA 90000',
     reviews: [
       {
         user: 'PhilArcadian',
+        reviewId: 0,
         rating: 3,
-        body: 'Burger places appear to be the new "thing" because I am starting to see one pop up on every corner.  I don’t mind at all though and hope they stick around because I personally love poke!  It reminds me of happy island vacation in Hawaii times.\
-        \
-        I was going to Turner’s and noticed this place next door. At 2pm on a Friday, there was a decent amount of people inside, and with a good 400+ reviews on Yelp, I figured it would be reliable. I try to do a legit scan of Yelp reviews prior to going to a poke restaurant because poke is consumed raw and I’m guessing comes with a high risk of food poisoning.\
-        \
-        The poke here was fresh but I didn’t like how the ingredients came separate because it was hard to eat everything together.  Also, the choices are more limited as you can only choose between tuna and salmon, so no scallops or octopus which is usually my go-to.  I got tuna with the spicy sauce, cucumber salad and a $1 additional for avocado. It came with one scoop of seaweed salad as well as one scoop of imitation crab. The taste of the crab and the taste of the sweet seaweed salad didn’t blend well together but they were right next to each other. Also, the poke was a little dry even with the spicy sauce but I tried my best to blend the ingredients within the box. Hubby got the classic soy sauce and the poke for me was too salty. \
-        \
-        Overall, not bad, but with so many great places, the competition is stiff! Out of all of the poke places I’ve tried... I would rate this place 3 stars!',
+        body: 'I love this establishment. Everything I’ve ever had here has been great. From the cheeseburger to turkey burger to turkey tacos. ',
+        ups: {
+          helpful: ['LeonardoDicaprio','LilyAldrin','BarneyStinson'],
+          witty: ['TedMosbey'],
+          harsh: []
+        }
+      },
+      {
+        user: 'TedMosbey',
+        reviewId: 1,
+        rating: 5,
+        body: 'My husband and I had to give up our burger :/ toward the end cause our son, who already finished his burger asked for more.... Next time, I need to order him 5oz :)',
         ups: {
           helpful: ['LeonardoDicaprio'],
-          witty: [],
+          witty: ['MarshallEriksen'],
           harsh: []
         }
       }
     ],
-    tags: ['burgers','american','greek'],
-    images: ['images/burger.jpg']
+    tags: ['burgers','american','tacos'],
+    images: ['images/mbburger1.jpg','images/mbburger2.jpg','images/mbburger3.jpg']
   },
   {
-    name: 'Burger King',
-    address: '222 2nd St. City, CA 90002',
+    name: 'Ichiban Poké Cafe',
+    restaurantId: 1,
+    address: '1001 First St. City, CA 90001',
     reviews: [
       {
         user: 'LeonardoDicaprio',
-        rating: 4,
-        body: 'For burgers, I’m puzzled as to why it took so long to execute orders--they had a considerably large staff working dinner service but I felt like everyone was waiting about 15-20 minutes for their food. I couldn’t think of one person they didn’t say "sorry, thank you for waiting." I don’t understand what the underlying issue is, but they need to fix it because you could just sense the hangriness building up in the room.',
+        reviewId: 0,
+        rating: 1,
+        body: 'can we talk about the service fee? I read the whole rationale about providing a living wage... but if they want their employees to have that, just add it into the price. This isn’t a service based concept, you order at a counter and that’s the end of the transaction. I’m not opposed to providing a living wage, but when the price charged is higher than the price on the menu, it only adds to confusion, and an uncomfortable situation for the customer who only wants to pay the price on the menu, especially when they get food to go. Build it into the price, enough with the signs and explanations.',
         ups: {
-          helpful: ['PhilArcadian', 'RobinSherbatsky'],
+          helpful: ['PhilArcadian'],
           witty: [],
-          harsh: ['BarneyStinson']
+          harsh: ['BarneyStinson','RobinSherbatsky']
         }
       },
       {
         user: 'PhilArcadian',
+        reviewId: 1,
         rating: 5,
-        body: 'Really cool place! Nice atmosphere with plenty of seating. Got seated relatively fast, it was pretty packed on a Sunday afternoon.',
+        body: 'At first glance of the menu, although I came for the poke, the shrimp is what caught my eye, but I knew I had to save it for another day. The employees helped me out by giving options to split bases and fish offering the customer a multitude of options/ability to try combinations (something I greatly appreciate). The fish options for the poke bowl limit to only tuna, however the sauces offered give the customer a variety to choose from in terms of flavor.',
         ups: {
-          helpful: ['LeonardoDicaprio'],
-          witty: [],
-          harsh: []
-        }
-      }
-    ],
-    tags: ['burgers','american'],
-    images: ['images/burger.jpg']
-  },
-  {
-    name: 'McDonald\'s',
-    address: '333 3rd St. City, CA 90003',
-    reviews: [
-      {
-        user: 'LeonardoDicaprio',
-        rating: 1,
-        body: 'Had an amazing classic burger with egg and caramelized onion , and a tasty magic shroom with cheddar cheese instead of the goat cheese.\
-        We tried a the truffle fries and was just great\
-        Next time I will try their shakes, they seem very tasty',
-        ups: {
-          helpful: [],
+          helpful: ['LeonardoDicaprio','LilyAldrin'],
           witty: ['TedMosbey'],
           harsh: []
         }
       }
     ],
-    tags: ['burgers','american'],
-    images: ['images/burger.jpg']
+    tags: ['poke','sushi','bowls','sashimi'],
+    images: ['images/ichipoke1.jpg','images/ichipoke2.jpg']
   },
   {
-    name: 'Cretian Burger #4',
-    address: '4044 4th St. City, CA 90004',
+    name: 'Cafe Duet',
+    restaurantId: 2,
+    address: '222 2nd St. City, CA 90002',
+    reviews: [
+      {
+        user: 'LeonardoDicaprio',
+        reviewId: 0,
+        rating: 5,
+        body: 'Absolutely love this place! So far I’ve had the lavender latte, earl grey creme latte, matcha tea latte, and one of the open faced sandwiches and everything has been absolutely amazing. They put lavender flowers on the lavender latte which is a super cute touch, and the whole place just has very light and airy energy.',
+        ups: {
+          helpful: ['RobinSherbatsky'],
+          witty: ['TedMosbey'],
+          harsh: []
+        }
+      },
+      {
+        user: 'TedMosbey',
+        reviewId: 1,
+        rating: 1,
+        body: 'Welcome to California, where most people know when an avocado is ripe or not. Impresso does not. Running out of bananas? Happened. Confusing almond milk for real milk? Also happened. Cold toast? Is toast supposed to be cold? The place is clean and the coffee is good and that is right about where the list of positives ends.',
+        ups: {
+          helpful: [],
+          witty: [],
+          harsh: ['TedMosbey','RobinSherbatsky']
+        }
+      }
+    ],
+    tags: ['cafe','coffee','tea','breakfast'],
+    images: ['images/cafe1.jpg', 'images/cafe2.jpg']
+  },
+  {
+    name: 'Cretan Burger #3',
+    restaurantId: 3,
+    address: '3033 3rd Ave. City, CA 90003',
     reviews: [
       {
         user: 'TedMosbey',
+        reviewId: 0,
         rating: 1,
         body: 'The burgers were flavorless and way over cooked. There was almost no chili on the Terlingua burger, and my son was unable to eat his normal burger because it was over cooked and over salted. The shakes were not good either: the chocolate one had a weird coconut taste and the salted caramel one was more whipped cream than milkshake.',
         ups: {
@@ -97,6 +120,7 @@ var Restaurants = [
       },
       {
         user: 'LilyAldrin',
+        reviewId: 1,
         rating: 5,
         body: 'Ordered a kobe burger with lettuce, tomato, grilled onions, and I added cheddar cheese. Beef had a good char-grilled flavor to it and not overly seasoned. The aioli on the burger was good. Overall, the burger was really good, I could tell all burger ingredients were of high quality, however, it was not one of my favorites. It didn’t compare to Green2Go, Hoppdoddy or Eureka. So, I guess I would say it was fourth on my list of natural burgers.',
         ups: {
@@ -107,6 +131,7 @@ var Restaurants = [
       },
       {
         user: 'LeonardoDicaprio',
+        reviewId: 2,
         rating: 4,
         body: 'Overall, the burger is good. My meat was a little too well done. It tasted good. The restaurant is new and perhaps the crafting of the sandwich will get better as time goes on.',
         ups: {
@@ -116,21 +141,50 @@ var Restaurants = [
         }
       }
     ],
-    tags: ['burgers','american','greek', 'italian'],
-    images: ['images/burger.jpg']
+    tags: ['burgers','american','greek','fries','beer'],
+    images: ['images/cretan1.jpg', 'images/cretan2.jpg', 'images/cretan3.jpg']
+  },
+  {
+    name: 'Starbucks',
+    restaurantId: 4,
+    address: '444 4th St. City, CA 90004',
+    reviews: [
+      {
+        user: 'RobinSherbatsky',
+        reviewId: 0,
+        rating: 3,
+        body: 'Pretty decent coffee. Average Starbucks service. nothing to hate but nothign to love.',
+        ups: {
+          helpful: ['RobinSherbatsky'],
+          witty: ['TedMosbey'],
+          harsh: []
+        }
+      },
+      {
+        user: 'BarneyStinson',
+        reviewId: 1,
+        rating: 5,
+        body: 'Best place to mingle with other coffee snobs. Absolutely love the ambiance. I’d give it 6 stars if i could',
+        ups: {
+          helpful: [],
+          witty: ['TedMosbey','RobinSherbatsky'],
+          harsh: []
+        }
+      }
+    ],
+    tags: ['cafe','coffee','tea','breakfast', 'lunch'],
+    images: ['images/sbux1.jpg', 'images/sbux2.jpg']
   },
   {
     name: 'Cinqos Tacos',
+    restaurantId: 5,
     address: '5055 5th St. City, CA 90005',
     reviews: [
       {
         user: 'MarshallEriksen',
+        reviewId: 0,
         rating: 5,
-        body: 'Some really great tacos!  I tried the chicken, carnitas, and fish and all were awesome.  They have their "house" sauce which they add which is really amazing.\
-        \
-        Horrible to park and be very careful...there’s a guy patrolling the nearby lot and will tow you...street parking is the only way to go (or walking/biking of course).\
-        \
-        Quick, reasonable and pretty tasty.  I’ll be back!',
+        body: '',
         ups: {
           helpful: ['LeonardoDicaprio','LilyAldrin','RobinSherbatsky'],
           witty: [],
@@ -139,17 +193,18 @@ var Restaurants = [
       },
       {
         user: 'TedMosbey',
-        rating: 5,
-        body: 'While Cinquos Tacquos may be delicious, the chicken \
-        tastes just like the kitchen *cinq* ;D',
+        reviewId: 0,
+        rating: 1,
+        body: 'While Cinquos Tacquos tastes like the kitchen *cinq* ;D',
         ups: {
-          helpful: ['RobinSherbatsky','LilyAldrin','LeonardoDicaprio','PhilArcadian','MarshallEriksen'],
-          witty: ['TedMosbey'],
+          helpful: ['RobinSherbatsky'],
+          witty: ['TedMosbey','LilyAldrin','LeonardoDicaprio','PhilArcadian','MarshallEriksen'],
           harsh: ['BarneyStinson']
         }
       },
       {
         user: 'PhilArcadian',
+        reviewId: 1,
         rating: 5,
         body: 'We’ve been to the location in Huntington Beach several times so we though we’d try the second location in Newport Beach.  This was a real disappointment, especially since we’ve always had good food at the main location.',
         ups: {
@@ -160,6 +215,7 @@ var Restaurants = [
       },
       {
         user: 'LeonardoDicaprio',
+        reviewId: 2,
         rating: 4,
         body: 'Best tacos in Orange County. A bit pricey for what you get but the scenery makes up for that. Be prepared to sit outside as there are not many tables inside. Also the bathrooms are only one stall and sometimes there’s a line.\
         The Nachos are to die for made with real cheese and enough to share with the entire table. I would suggest trying one of each taco but be aware if you don’t like spicy make sure to steer away from the "hot" side of the menu.',
@@ -170,21 +226,19 @@ var Restaurants = [
         }
       }
     ],
-    tags: ['tacos','burritos','quesadillas','mexican'],
-    images: ['images/tacos.jpg']
+    tags: ['tacos','mexican'],
+    images: ['images/tacos1.jpg','images/tacos2.jpg']
   },
   {
-    name: 'Corner Gastropub',
-    address: '5055 5th St. City, CA 90005',
+    name: 'Beehive Gastropub',
+    restaurantId: 6,
+    address: '6066 6th St. City, CA 90006',
     reviews: [
       {
         user: 'LilyAldrin',
+        reviewId: 0,
         rating: 5,
-        body: 'I had the Veggie Burrito, and it was the best burrito I’ve ever tasted.\
-        \
-        The tortilla was a perfect crispiness, the ingredients were fresh and plentiful, and it had a divine creaminess that rivaled cheese (which wasn’t there), mostly from the caramelized mushrooms and artichoke leaves, in addition to the Spinach and perfectly textured pinto beans.\
-        \
-        Check the joint out.',
+        body: 'I had the Veggie brat, and it was the best brat I’ve ever tasted. The bun was a perfect crispiness, the ingredients were fresh and plentiful, and it had a divine umami that rivaled pork (which wasn’t there), mostly from the caramelized mushrooms and artichoke leaves. Check the joint out.',
         ups: {
           helpful: ['MarshallEriksen'],
           witty: [],
@@ -193,18 +247,20 @@ var Restaurants = [
       },
       {
         user: 'MarshallEriksen',
+        reviewId: 1,
         rating: 5,
-        body: 'Best tacos I’ve had in my life. I ate here twice while on vacation in Newport Beach. The first time was for dinner. I had the OG and an order of chips and salsa. Obviously home made tortilla chips and excellent salsa. We also stopped in for breakfast the day we left town. Best breakfast tacos I’ve had ever, hands down.  If I lived near Sanchos I’d be a regular. Not a huge menu, but I think that’s good, they sell what they are good at, nothing more.',
+        body: 'I’ve been to Gordon Ramsey’s burgers in Las Vegas. To me, the "Black Sheep Burger" tastes almost the same with their meat. It’s a high price for a smallish burger, but the price does match the quality. Ramsey’s burgers cost $15 while Black Sheep is $8, so... I think Black Sheep is better in this way.',
         ups: {
-          helpful: ['LilyAldrin'],
+          helpful: ['LilyAldrin','RobinSherbatsky','TedMosbey'],
           witty: [],
           harsh: []
         }
       },
       {
         user: 'LeonardoDicaprio',
+        reviewId: 2,
         rating: 4,
-        body: 'The OG tacos just blew my mind...one of the best tacos I’ve had to date...well played Sancho!',
+        body: 'Looking for a delicious, juicy burger to satisfy your hunger? Black Sheep can help you solve that! Located right next to Cole’s, this restaurant is almost hidden due to its lack of signage and subtle entrance. However, the restaurant was pretty packed when we went, and it seems that locals are a frequent visitor at this gastropub!',
         ups: {
           helpful: ['RobinSherbatsky'],
           witty: [],
@@ -212,7 +268,7 @@ var Restaurants = [
         }
       }
     ],
-    tags: ['tacos','burritos','quesadillas','mexican', 'american','burgers'],
-    images: ['images/tacos.jpg']
+    tags: ['brats','sausages','american','burgers'],
+    images: ['images/beehive1.jpg','images/beehive2.jpg','images/beehive3.jpg']
   }
 ]
