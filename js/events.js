@@ -8,6 +8,9 @@ document.body.addEventListener('click', function (e) {
     vote(restaurantId, reviewId, upsKey);
     toggle(e.target, 'change');
   }
+  if (e.target.getAttribute('data-method') == 'review') {
+    toggle(document.getElementById('userReviewModal'), 'hidden');
+  }
 });
 
 document.getElementById('search').addEventListener('submit', function (evt) {
@@ -76,12 +79,4 @@ document.getElementById('review').addEventListener('submit', function  (evt) {
   }
   serveResults(RESTAURANTS);
   toggleClassName(document.getElementById('userReviewModal'), 'hidden');
-});
-
-document.getElementById('userReviewButton').addEventListener('click', function () {
-  toggle(document.getElementById('userReviewModal'), 'hidden');
-});
-
-document.getElementById('userReviewCancelButton').addEventListener('click', function () {
-  toggle(document.getElementById('userReviewModal'), 'hidden');
 });

@@ -23,7 +23,7 @@
               <label class="sr-only" for="location">... in location</label>
               <input class="form-control input" id="location" type="text" name="location" placeholder="Near Me...">
               <input class="btn btn-success" type="submit" value="Search">
-              <a class="btn btn-primary navbar-btn navbar-right" id="userReviewButton" href="#"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span><span class="visible-xs-inline"> Add Review</span></a>
+              <a class="btn btn-primary navbar-btn navbar-right" id="userReviewButton" href="#" data-method='review'><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span><span class="visible-xs-inline"> Add Review</span></a>
             </form>
           </div>
         </div><!-- /.container -->
@@ -61,7 +61,7 @@
                 <input class="form-control" type="file" accept="image/*" id="image" value="">
               </div>
               <div class="btn-group pull-right">
-                <input class="btn btn-default" id="userReviewCancelButton" type="button" value="Cancel">
+                <input class="btn btn-default" id="userReviewCancelButton" type="button" value="Cancel" data-method='review'>
                 <input class="btn btn-success" type="submit" value="Submit">
               </div>
             </form>
