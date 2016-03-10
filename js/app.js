@@ -93,7 +93,7 @@ function searchTag (query) {
   searchSubmit();
 }
 
-function tags(terms) {
+function tagMaker(terms) {
   var container = document.createElement('p');
   var buttons = _.map(terms, function(tag) {
     var button = document.createElement('span');
@@ -146,7 +146,7 @@ function serveResults(restaurants, results ) {
     var rating = document.createElement('span');
     var author = document.createElement('span');
     var review = document.createElement('p');
-    var tagsContainer = tags(restaurant.tags);
+    var tagsContainer = tagMaker(restaurant.tags);
 
     dish.className = 'row';
     mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
@@ -257,7 +257,7 @@ function serveLocation(restaurant) {
     var rating = document.createElement('span');
     var info = document.createElement('div');
     var address = document.createElement('p');
-    var tagsContainer = tags(restaurant.tags);
+    var tagsContainer = tagMaker(restaurant.tags);
     var imageContainer = document.createElement('div');
     var images = _.map(restaurant.images, function(path) {
       var image = document.createElement('img')
@@ -331,6 +331,51 @@ function searchSubmit() {
     })
   }
   serveResults(results, form);
+}
+
+function reviewSubmit() {
+
+  function cleanTags(string) {
+    tags = string.split(/\s*,\s*/ig);
+    tags = _.map(tags, function(string){
+      return string.toLowerCase();
+    });
+    tags = _.compact(tags);
+    return _.uniq(tags);
+  }
+
+  var submission = {
+    name: document.getElementById('restaurant').value,
+    restaurantId: 0,
+    address: document.getElementById('address').value,
+    reviews: [{
+      user: 'defaultUser',
+      reviewId: 0,
+      rating: document.getElementById('rating').value,
+      body: document.getElementById('reviewBody').value,
+      ups: {
+        helpful: [],
+        witty: [],
+        harsh: []
+      }
+    }],
+    tags: cleanTags(document.getElementById('tags').value),
+    images: document.getElementById('image').src
+  };
+
+  var i = RESTAURANTS.findIndex(function(restaurant){
+    return restaurant.name == submission.name;
+  });
+  if (i >= 0) {
+    submission.reviews[0].reviewId == RESTAURANTS[i].reviews.length;
+    RESTAURANTS[i].reviews.push(submission.reviews[0]);
+    RESTAURANTS[i].tags = _.union(RESTAURANTS[i].tags, submission.tags);
+  } else {
+    submission.restaurantId = RESTAURANTS.length;
+    RESTAURANTS.push(submission);
+  }
+  serveResults(RESTAURANTS);
+  toggle(document.getElementById('userReviewModal'), 'hidden');
 }
 
 serveResults(RESTAURANTS, undefined);
