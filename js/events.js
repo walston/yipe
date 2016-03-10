@@ -30,6 +30,9 @@ document.body.addEventListener('click', function (e) {
   else if (method == 'results') {
     serveResults(lastServed);
   }
+  else if (method == 'sort') {
+    sortPlates(lastServed, target.getAttribute('data-sortmethod'));
+  }
 });
 
 document.getElementById('search').addEventListener('submit', function (evt) {

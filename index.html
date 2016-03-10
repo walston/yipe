@@ -5,6 +5,7 @@
     <title>yipe™</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" media="screen" href="css/default.css">
     <script src="js/data.js" charset="utf-8"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -28,6 +29,15 @@
           </div>
         </div><!-- /.container -->
     </nav>
+    <div class="container" id="localNavigation">
+      <div class="row">
+        <div class="col-xs-12 text-right">
+          <span>Sort:</span>
+          <button class="btn btn-default btn-sm" type="button" name="button" data-method="sort" data-sortmethod="rating"><i class="fa fa-star"></i></button>
+          <button class="btn btn-default btn-sm" type="button" name="button" data-method="sort" data-sortmethod="name"><i class="fa fa-sort-alpha-asc"></i></button>
+        </div><!-- /.nav-support -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
     <div class="container" id="Table">
     </div><!-- /.container -->
     <div id="userReviewModal" class="hidden">

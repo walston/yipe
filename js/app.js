@@ -103,7 +103,6 @@ function sortPlates(restaurants, sortMethod) {
   } else if (sortMethod == 'rating') {
     var ordered = _.sortBy(restaurants, function(restaurant) {
       var averageRating = restaurantAverage(restaurant);
-      console.log(restaurant.name, averageRating);
       return averageRating;
     });
     serveResults(ordered.reverse());
