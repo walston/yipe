@@ -1,15 +1,22 @@
 window.setInterval(check, 500);
 
 document.body.addEventListener('click', function (e) {
-  if (e.target.getAttribute('data-method') == 'vote') {
+  var method = e.target.getAttribute('data-method');
+  if (method == 'vote') {
     var restaurantId = Number.parseInt(e.target.getAttribute('data-restaurantid'));
     var reviewId = Number.parseInt(e.target.getAttribute('data-reviewid'));
     var upsKey = e.target.getAttribute('data-key');
     vote(restaurantId, reviewId, upsKey);
     toggle(e.target, 'change');
   }
-  if (e.target.getAttribute('data-method') == 'review') {
+  if (method == 'review') {
     toggle(document.getElementById('userReviewModal'), 'hidden');
+  }
+  if (method == 'location') {
+    serveLocation(RESTAURANTS[e.target.getAttribute('data-restaurantid')])
+  }
+  if (method == 'results') {
+    serveResults(lastServed);
   }
 });
 

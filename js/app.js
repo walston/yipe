@@ -115,13 +115,14 @@ function serveResults(restaurants, results ) {
     var tags = _.map(restaurant.tags, makeLabel); // array of <span>label</span>
 
     dish.className = 'row';
-    dish.setAttribute('data-id',restaurant);
     mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
     imageWrapper.className = 'em-top';
     image.className = 'img-responsive inline-block';
     image.src = restaurant.images[0];
     mediaBody.className = 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10';
     nameLink.href = '#';
+    nameLink.setAttribute('data-restaurantid', restaurant.restaurantId);
+    nameLink.setAttribute('data-method', 'location');
     rating.className = 'text-muted h4';
     author.className = 'text-muted h4';
 
@@ -129,11 +130,6 @@ function serveResults(restaurants, results ) {
     rating.textContent = averageRating + '★';
     author.textContent = idealReview.user;
     review.textContent = idealReview.body;
-
-    nameLink.addEventListener('click', function () {
-      // ### RED ALERT -- REFACTORING WILL BREAK THIS!!
-      serveLocation(restaurant);
-    });
 
     dish.appendChild(mediaLeft);
     mediaLeft.appendChild(imageWrapper);
@@ -191,9 +187,7 @@ function serveLocation(restaurant) {
     back.className = 'btn btn-primary';
     back.href = '#'
     back.textContent = '← Back'
-    back.addEventListener('click', function () {
-      serveResults(lastServed);
-    });
+    back.setAttribute('data-method', 'results');
     container.appendChild(back);
     return container;
   }
