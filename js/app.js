@@ -367,7 +367,7 @@ function reviewSubmit() {
     return restaurant.name == submission.name;
   });
   if (i >= 0) {
-    submission.reviews[0].reviewId == RESTAURANTS[i].reviews.length;
+    submission.reviews[0].reviewId = RESTAURANTS[i].reviews.length;
     RESTAURANTS[i].reviews.push(submission.reviews[0]);
     RESTAURANTS[i].tags = _.union(RESTAURANTS[i].tags, submission.tags);
   } else {
