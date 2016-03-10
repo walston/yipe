@@ -33,13 +33,6 @@ function clear(element, parent) {
   }
 }
 
-function makeLabel(text) {
-  var span = document.createElement('span');
-  span.className = 'label label-default';
-  span.textContent = text;
-  return span;
-}
-
 function reviewRanking(review) {
   helpfuls = review.ups['helpful'].length;
   wittys = review.ups['witty'].length;
@@ -94,6 +87,29 @@ function votes(restaurant, review) {
   return container;
 }
 
+function searchTag (query) {
+  var input = document.getElementById('query');
+  input.value = query;
+  searchSubmit();
+}
+
+function tags(terms) {
+  var container = document.createElement('p');
+  var buttons = _.map(terms, function(tag) {
+    var button = document.createElement('span');
+    button.textContent = tag;
+    button.className = 'btn btn-xs btn-default';
+    button.setAttribute('data-method', 'tag');
+    button.setAttribute('data-value', tag);
+    return button;
+  })
+  buttons.forEach(function(button) {
+    container.appendChild(button);
+    container.appendChild(document.createTextNode(' '));
+  })
+  return container;
+}
+
 function sortPlates(restaurants, sortMethod) {
   if (sortMethod == 'name') {
     var ordered = _.sortBy(restaurants, function(restaurant) {
@@ -130,8 +146,7 @@ function serveResults(restaurants, results ) {
     var rating = document.createElement('span');
     var author = document.createElement('span');
     var review = document.createElement('p');
-    var tagsContainer = document.createElement('p');
-    var tags = _.map(restaurant.tags, makeLabel); // array of <span>label</span>
+    var tagsContainer = tags(restaurant.tags);
 
     dish.className = 'row';
     mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
@@ -162,10 +177,6 @@ function serveResults(restaurants, results ) {
     name.appendChild(author);
     mediaBody.appendChild(review);
     mediaBody.appendChild(tagsContainer);
-    _.each(tags, function(tag) {
-      tagsContainer.appendChild(tag);
-      tagsContainer.appendChild(document.createTextNode(' '));
-    });
     return dish;
   }
 
@@ -246,8 +257,7 @@ function serveLocation(restaurant) {
     var rating = document.createElement('span');
     var info = document.createElement('div');
     var address = document.createElement('p');
-    var tagsContainer = document.createElement('p');
-    var tags = _.map(restaurant.tags, makeLabel);
+    var tagsContainer = tags(restaurant.tags);
     var imageContainer = document.createElement('div');
     var images = _.map(restaurant.images, function(path) {
       var image = document.createElement('img')
@@ -277,10 +287,6 @@ function serveLocation(restaurant) {
     head.appendChild(info);
     info.appendChild(address);
     head.appendChild(tagsContainer);
-    tags.forEach(function(tag) {
-      tagsContainer.appendChild(tag);
-      tagsContainer.appendChild(document.createTextNode(' '));
-    });
     head.appendChild(imageContainer);
     images.forEach(function(image){
       imageContainer.appendChild(image);
@@ -297,6 +303,34 @@ function serveLocation(restaurant) {
   clear(TABLE);
   TABLE.appendChild(localNav());
   TABLE.appendChild(mainCourse(restaurant));
+}
+
+function searchSubmit() {
+  var form = {
+    query: _.filter(document.getElementById('query').value.split(/[\s,\.]+/), function(term) {
+      return term.length > 0;
+    }),
+    near: _.filter(document.getElementById('location').value.split(/[\s,\.]+/), function(term) {
+      return term.length > 0;
+    })
+  };
+  var results = _.chain(RESTAURANTS).filter(byQuery).filter(byLocation).value();
+
+  function byQuery(obj) {
+    if (form.query.length == 0) return true;
+    return _.some(form.query, function (term) {
+      var query = new RegExp(term, 'i');
+      return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
+    })
+  }
+  function byLocation(obj) {
+    if (form.near.length == 0) return true;
+    return _.some(form.near, function (term) {
+      var location = new RegExp(term, 'i');
+      return (location.test(obj.address));
+    })
+  }
+  serveResults(results, form);
 }
 
 serveResults(RESTAURANTS, undefined);

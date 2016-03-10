@@ -33,35 +33,14 @@ document.body.addEventListener('click', function (e) {
   else if (method == 'sort') {
     sortPlates(lastServed, target.getAttribute('data-sortmethod'));
   }
+  else if (method == 'tag') {
+    searchTag(target.getAttribute('data-value'));
+  }
 });
 
 document.getElementById('search').addEventListener('submit', function (evt) {
   evt.preventDefault();
-  var form = {
-    query: _.filter(document.getElementById('query').value.split(/[\s,\.]+/), function(term) {
-      return term.length > 0;
-    }),
-    near: _.filter(document.getElementById('location').value.split(/[\s,\.]+/), function(term) {
-      return term.length > 0;
-    })
-  };
-  var results = _.chain(RESTAURANTS).filter(byQuery).filter(byLocation).value();
-
-  function byQuery(obj) {
-    if (form.query.length == 0) return true;
-    return _.some(form.query, function (term) {
-      var query = new RegExp(term, 'i');
-      return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
-    })
-  }
-  function byLocation(obj) {
-    if (form.near.length == 0) return true;
-    return _.some(form.near, function (term) {
-      var location = new RegExp(term, 'i');
-      return (location.test(obj.address));
-    })
-  }
-  serveResults(results, form);
+  searchSubmit();
 })
 
 document.getElementById('review').addEventListener('submit', function  (evt) {
