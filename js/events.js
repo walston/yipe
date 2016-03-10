@@ -1,21 +1,34 @@
 window.setInterval(check, 500);
 
 document.body.addEventListener('click', function (e) {
-  var method = e.target.getAttribute('data-method');
-  if (method == 'vote') {
-    var restaurantId = Number.parseInt(e.target.getAttribute('data-restaurantid'));
-    var reviewId = Number.parseInt(e.target.getAttribute('data-reviewid'));
-    var upsKey = e.target.getAttribute('data-key');
-    vote(restaurantId, reviewId, upsKey);
-    toggle(e.target, 'change');
+  function parentWith(attribute, clicked) {
+    for (looker = clicked;
+      looker != document.body;
+      looker = looker.parentNode) {
+      if (looker.hasAttribute(attribute))
+        return looker;
+    }
+    return clicked;
   }
-  if (method == 'review') {
+  
+  var target = parentWith('data-method', e.target);
+  console.log('var target = ' + target);
+  var method = target.getAttribute('data-method');
+
+  if (method == 'vote') {
+    var restaurantId = Number.parseInt(target.getAttribute('data-restaurantid'));
+    var reviewId = Number.parseInt(target.getAttribute('data-reviewid'));
+    var upsKey = target.getAttribute('data-key');
+    vote(restaurantId, reviewId, upsKey);
+    toggle(target, 'change');
+  }
+  else if (method == 'review') {
     toggle(document.getElementById('userReviewModal'), 'hidden');
   }
-  if (method == 'location') {
-    serveLocation(RESTAURANTS[e.target.getAttribute('data-restaurantid')])
+  else if (method == 'location') {
+    serveLocation(RESTAURANTS[target.getAttribute('data-restaurantid')])
   }
-  if (method == 'results') {
+  else if (method == 'results') {
     serveResults(lastServed);
   }
 });
