@@ -10,9 +10,8 @@ document.body.addEventListener('click', function (e) {
     }
     return clicked;
   }
-  
+
   var target = parentWith('data-method', e.target);
-  console.log('var target = ' + target);
   var method = target.getAttribute('data-method');
 
   if (method == 'vote') {
