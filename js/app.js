@@ -202,9 +202,17 @@ function serveResults(restaurants, results ) {
   if (results) {
     TABLE.appendChild(searchTerms(restaurants.length, results.query, results.near));
   }
-  restaurants.forEach(function(restaurant) {
-    TABLE.appendChild(plate(restaurant));
-  });
+  if (restaurants.length == 0) {
+    var noResults = document.createElement('img');
+    noResults.className = 'col-xs-8 col-xs-offset-2 em-top';
+    noResults.src = 'images/nothing.svg';
+    noResults.setAttribute('alt', 'Nothing found...');
+    TABLE.appendChild(noResults);
+  } else {
+    restaurants.forEach(function(restaurant) {
+      TABLE.appendChild(plate(restaurant));
+    });
+  }
   lastServed = restaurants;
 }
 

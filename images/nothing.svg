@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 439.04 322.29">
+  <defs>
+    <linearGradient id="a" x1="528.39" y1="118" x2="528.39" y2="118" gradientTransform="translate(10)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ccc"/>
+      <stop offset="0.33" stop-color="#e6e6e6"/>
+      <stop offset="0.54" stop-color="#ccc"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <linearGradient id="b" x1="215.09" y1="321.79" x2="215.09" y2="0.5" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e6e6e6"/>
+      <stop offset="1" stop-color="#ccc"/>
+    </linearGradient>
+    <linearGradient id="c" x1="215.09" y1="60.14" x2="215.09" y2="262.14" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <linearGradient id="d" x1="484.12" y1="117.97" x2="484.12" y2="341.3" gradientTransform="matrix(-1, 0, 0, 1, 1007.59, 0)" gradientUnits="userSpaceOnUse">
+      <stop offset="0.09" stop-color="#ccc"/>
+      <stop offset="0.32" stop-color="#e6e6e6"/>
+      <stop offset="0.54" stop-color="#ccc"/>
+      <stop offset="1" stop-color="#e6e6e6"/>
+    </linearGradient>
+    <linearGradient id="e" x1="116.51" y1="89.38" x2="116.51" y2="355.3" xlink:href="#b"/>
+    <linearGradient id="f" x1="122" y1="89.38" x2="122" y2="355.3" xlink:href="#b"/>
+  </defs>
+  <title>nothing</title>
+  <path d="M538.39,118" transform="translate(-104.91 -78.86)" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#a)"/>
+  <g>
+    <circle cx="215.09" cy="161.14" r="160.64" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#b)"/>
+    <circle cx="215.09" cy="161.14" r="101" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#c)"/>
+    <path d="M538.55,118c1.25,0,2.79,1.16,2.95,5.1,1.95,50.51,1.95,66.93,1.95,66.93,0,12.69-14.18,14.8-14.18,24.52,0,76.5,5.32,83.15,5.32,107.52,0,16-6.74,19.26-11.09,19.26S512.39,338,512.39,322c0-24.38,5.31-31,5.31-107.52,0-9.72-14.2-11.83-14.2-24.52,0,0,.24-16.39,2.19-66.9,0.15-3.95,1.7-5.1,2.95-5.1s2.87,1.12,2.87,5.07v30c0,4.15.87,7.43,2.16,7.43h-0.11c1.29,0,1.95-3.28,1.95-7.43v-30c0-3.95,1.68-4.57,2.93-4.57h0.2c1.25,0,2.87.62,2.87,4.57v30c0,4.15.93,7.43,2.22,7.43h-0.11c1.29,0,1.89-3.28,1.89-7.43v-30c0-3.95,1.75-4.57,3-4.57h0.05c1.25,0,2.95.62,2.95,4.57v30c0,4.15.71,7.43,2,7.43h-0.11c1.29,0,2.11-3.28,2.11-7.43v-30c0-3.95,1.64-5.07,2.89-5.07" transform="translate(-104.91 -78.86)" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#d)"/>
+    <g>
+      <path d="M107.5,232.13V238c0,76.5-2.09,73.67-2.09,98,0,16,6.74,19.26,11.09,19.26S127.61,352,127.61,336c0-22.48-4.58-37-5.28-98C119.06,231.66,109.9,225.13,107.5,232.13Z" transform="translate(-104.91 -78.86)" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#e)"/>
+      <path d="M122.33,238c3.14-6.4,14.17-18,14.17-48.6,0-65-18.85-100-24.81-100-2.33,0-4.19,4.66-4.19,9.62V232.13C109.9,225.13,119.06,231.66,122.33,238Z" transform="translate(-104.91 -78.86)" style="stroke: #fff;stroke-miterlimit: 10;fill: url(#f)"/>
+    </g>
+  </g>
+</svg>
