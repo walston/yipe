@@ -94,13 +94,33 @@ function votes(restaurant, review) {
   return container;
 }
 
+function sortPlates(restaurants, sortMethod) {
+  if (sortMethod == 'name') {
+    var ordered = _.sortBy(restaurants, function(restaurant) {
+      return restaurant.name.toLowerCase();
+    });
+    serveResults(ordered);
+  } else if (sortMethod == 'rating') {
+    var ordered = _.sortBy(restaurants, function(restaurant) {
+      var averageRating = restaurantAverage(restaurant);
+      console.log(restaurant.name, averageRating);
+      return averageRating;
+    });
+    serveResults(ordered.reverse());
+  }
+}
+
+function restaurantAverage (restaurant) {
+  return _.reduce(restaurant.reviews, function (memo, value, index, list) {
+      return memo + (value.rating / list.length);
+    }, 0);
+}
+
 function serveResults(restaurants, results ) {
 
   function plate(restaurant) {
     var idealReview = _.max(restaurant.reviews, reviewRanking);
-    var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
-        return memo + (value.rating / list.length);
-      }, 0));
+    var averageRating = Math.floor(restaurantAverage(restaurant));
     var dish = document.createElement('div');
     var mediaLeft = document.createElement('div');
     var imageWrapper = document.createElement('div');
@@ -219,9 +239,7 @@ function serveLocation(restaurant) {
   }
 
   function mainCourse(restaurant) {
-    var averageRating = Math.floor(_.reduce(restaurant.reviews, function (memo, value, index, list) {
-        return memo + (value.rating / list.length);
-      }, 0));
+    var averageRating = Math.floor(restaurantAverage(restaurant));
     var sortedReviews = _.sortBy(restaurant.reviews, reviewRanking);
     var card = document.createElement('div');
     var head = document.createElement('div');
