@@ -360,7 +360,7 @@ function reviewSubmit() {
       }
     }],
     tags: cleanTags(document.getElementById('tags').value),
-    images: document.getElementById('image').src
+    images: ['images/generic1.jpg','images/generic2.jpg']
   };
 
   var i = RESTAURANTS.findIndex(function(restaurant){
