@@ -12,10 +12,12 @@
   width: 100%;
   height: 100%;
   padding: 0;
+  padding-top: 3em;
   margin: 0;
   background-color: rgba(0, 0, 0, 0.75);
   z-index: 10;
 }
+.navbar-brand { width: 72px; }
 .clickable { cursor: pointer; }
 .em-top { margin-top: 1em; }
 .en-top { margin-top: .5em; }
