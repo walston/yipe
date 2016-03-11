@@ -1,4 +1,5 @@
 var TABLE = document.getElementById('Table');
+var CRAVINGS = document.getElementById('cravings');
 var me = 'defaultUser';
 var lastServed = RESTAURANTS;
 
@@ -131,7 +132,18 @@ function restaurantAverage (restaurant) {
     }, 0);
 }
 
-function serveResults(restaurants, results ) {
+function serveCravings (element) {
+  clear(CRAVINGS);
+  CRAVINGS.appendChild(element);
+}
+
+function serveResults(restaurants, results) {
+  if (!results) {
+    results = {
+      query: '',
+      location: ''
+    }
+  }
 
   function plate(restaurant) {
     var idealReview = _.max(restaurant.reviews, reviewRanking);
@@ -181,27 +193,29 @@ function serveResults(restaurants, results ) {
   }
 
   function searchTerms(returned, terms, locations) {
-    var queryTerms = document.createElement('h3');
-    queryTerms.className = 'row text-muted';
-    queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
-    if (terms.length > 0) {
-      queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
-        return '\''+term+'\'';
-      })
-      .join(', ');
+    if (CRAVINGS.getAttribute('data-queried') == 'true') {
+      var queryTerms = document.createElement('span');
+      queryTerms.className = 'h4 text-muted';
+      queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
+      if (terms.length > 0) {
+        queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
+          return '\''+term+'\'';
+        })
+        .join(', ');
+      }
+      if (locations.length > 0) {
+        queryTerms.textContent += ' near ' + locations.join(', ');
+      }
+      queryTerms.textContent += ':';
+      return queryTerms;
+    } else {
+      return document.createElement('br')
     }
-    if (locations.length > 0) {
-      queryTerms.textContent += ' near ' + locations.join(', ');
-    }
-    queryTerms.textContent += ':';
-    return queryTerms;
   }
 
   var TABLE = document.getElementById('Table');
   clear(TABLE);
-  if (results) {
-    TABLE.appendChild(searchTerms(restaurants.length, results.query, results.near));
-  }
+  serveCravings(searchTerms(restaurants.length, results.query, results.location));
   if (restaurants.length == 0) {
     var noResults = document.createElement('img');
     noResults.className = 'col-xs-8 col-xs-offset-2 em-top';
@@ -309,7 +323,7 @@ function serveLocation(restaurant) {
 
   TABLE = document.getElementById('Table');
   clear(TABLE);
-  TABLE.appendChild(localNav());
+  serveCravings(localNav());
   TABLE.appendChild(mainCourse(restaurant));
 }
 
@@ -318,7 +332,7 @@ function searchSubmit() {
     query: _.filter(document.getElementById('query').value.split(/[\s,\.]+/), function(term) {
       return term.length > 0;
     }),
-    near: _.filter(document.getElementById('location').value.split(/[\s,\.]+/), function(term) {
+    location: _.filter(document.getElementById('location').value.split(/[\s,\.]+/), function(term) {
       return term.length > 0;
     })
   };
@@ -332,11 +346,17 @@ function searchSubmit() {
     })
   }
   function byLocation(obj) {
-    if (form.near.length == 0) return true;
-    return _.some(form.near, function (term) {
+    if (form.location.length == 0) return true;
+    return _.some(form.location, function (term) {
       var location = new RegExp(term, 'i');
       return (location.test(obj.address));
     })
+  }
+  console.log(form.query.length, form.location.length, form);
+  if (form.query.length > 0 || form.location.length > 0) {
+    CRAVINGS.setAttribute('data-queried', 'true');
+  } else {
+    CRAVINGS.removeAttribute('data-queried');
   }
   serveResults(results, form);
 }
@@ -386,4 +406,4 @@ function reviewSubmit() {
   toggle(document.getElementById('userReviewModal'), 'hidden');
 }
 
-serveResults(RESTAURANTS, undefined);
+serveResults(RESTAURANTS);
