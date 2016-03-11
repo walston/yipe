@@ -391,7 +391,7 @@ function reviewSubmit() {
   };
 
   var i = RESTAURANTS.findIndex(function(restaurant){
-    return restaurant.name == submission.name;
+    return restaurant.name.toLowerCase() == submission.name.toLowerCase();
   });
   if (i >= 0) {
     submission.reviews[0].reviewId = RESTAURANTS[i].reviews.length;
