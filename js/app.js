@@ -1,11 +1,11 @@
 var TABLE = document.getElementById('Table');
 var CRAVINGS = document.getElementById('cravings');
 var me = 'defaultUser';
-var lastServed = RESTAURANTS;
+var lastServed = database;
 
 function check() {
   var suspects = document.getElementsByClassName('change');
-  for (i=0;i<suspects.length;i++){
+  for (i=0; i < suspects.length; i++){
     var suspect = suspects[i];
     if (suspect.getAttribute('data-method') == 'vote'){
       checkVotes(suspect);
@@ -13,14 +13,14 @@ function check() {
   }
 }
 
-function checkVotes (element) {
-  var restaurant = RESTAURANTS[element.getAttribute('data-restaurantid')];
+function checkVotes(element) {
+  var restaurant = database[element.getAttribute('data-restaurantid')];
   var review = restaurant.reviews[element.getAttribute('data-reviewid')];
   var ups = review.ups[element.getAttribute('data-key')];
   redraw = (ups.length != element.getAttribute('data-value'));
   if (redraw){
     var newVotes = votes(restaurant, review);
-    element.parentElement.parentElement.replaceChild(newVotes ,element.parentElement);
+    element.parentElement.parentElement.replaceChild(newVotes, element.parentElement);
   }
 }
 
@@ -47,13 +47,13 @@ function toggle(element, value) {
   if ( i < 0 ) {
     classList.push(value);
   } else {
-    classList.splice(i,1);
+    classList.splice(i, 1);
   }
   element.className = classList.join(' ');
 }
 
 function vote(restaurantId, reviewId, tag) {
-  var ballotBox = RESTAURANTS[restaurantId].reviews[reviewId].ups[tag];
+  var ballotBox = database[restaurantId].reviews[reviewId].ups[tag];
   var i = ballotBox.indexOf(me)
   if (i < 0) {
     ballotBox.push(me);
@@ -88,7 +88,7 @@ function votes(restaurant, review) {
   return container;
 }
 
-function searchTag (query) {
+function searchTag(query) {
   var input = document.getElementById('query');
   input.value = query;
   searchSubmit();
@@ -111,19 +111,19 @@ function tagMaker(terms) {
   return container;
 }
 
-function sortPlates(restaurants, sortMethod) {
+function sortPlates(database, sortMethod) {
   if (sortMethod == 'name') {
-    var ordered = _.sortBy(restaurants, function(restaurant) {
+    var ordered = _.sortBy(database, function(restaurant) {
       return restaurant.name.toLowerCase();
     });
     serveResults(ordered);
   } else if (sortMethod == 'rating') {
-    var ordered = _.sortBy(restaurants, function(restaurant) {
+    var ordered = _.sortBy(database, function(restaurant) {
       return restaurantAverage(restaurant);
     });
     serveResults(ordered.reverse());
   } else if (sortMethod == 'price') {
-    var ordered = _.sortBy(restaurants, function(restaurant) {
+    var ordered = _.sortBy(database, function(restaurant) {
       return restaurant.pricing;
     });
     serveResults(ordered)
@@ -148,18 +148,20 @@ function ratingSymbols(repetitions, character, className){
   return container;
 }
 
-function serveCravings (element) {
+function serveCravings(element) {
   clear(CRAVINGS);
   CRAVINGS.appendChild(element);
 }
 
-function serveResults(restaurants, results) {
+function serveResults(database, results) {
   if (!results) {
     results = {
       query: '',
       location: ''
     }
   }
+
+  // append to the dom
 
   function plate(restaurant) {
     var idealReview = _.max(restaurant.reviews, reviewRanking);
@@ -235,19 +237,19 @@ function serveResults(restaurants, results) {
 
   var TABLE = document.getElementById('Table');
   clear(TABLE);
-  serveCravings(searchTerms(restaurants.length, results.query, results.location));
-  if (restaurants.length == 0) {
+  serveCravings(searchTerms(database.length, results.query, results.location));
+  if (database.length == 0) {
     var noResults = document.createElement('img');
     noResults.className = 'col-xs-8 col-xs-offset-2 em-top';
     noResults.src = 'images/nothing.svg';
     noResults.setAttribute('alt', 'Nothing found...');
     TABLE.appendChild(noResults);
   } else {
-    restaurants.forEach(function(restaurant) {
+    database.forEach(function(restaurant) {
       TABLE.appendChild(plate(restaurant));
     });
   }
-  lastServed = restaurants;
+  lastServed = database;
 }
 
 function serveLocation(restaurant) {
@@ -265,7 +267,7 @@ function serveLocation(restaurant) {
   }
 
   function reviewElementer(review) {
-    var restaurant = this; // passed in via _.map(x,x,[context]) ?? do we still need this??
+    var restaurant = this;
     var container = document.createElement('div');
     var info = document.createElement('p');
     var author = document.createElement('span');
@@ -361,7 +363,7 @@ function searchSubmit() {
       return term.length > 0;
     })
   };
-  var results = _.chain(RESTAURANTS).filter(byQuery).filter(byLocation).value();
+  var results = _.chain(database).filter(byQuery).filter(byLocation).value();
 
   function byQuery(obj) {
     if (form.query.length == 0) return true;
@@ -399,7 +401,7 @@ function reviewSubmit() {
   var submission = {
     "name": document.getElementById('restaurant').value,
     "restaurantId": 0,
-    "pricing": _.random(1,10),
+    "pricing": _.random(1, 10),
     "address": document.getElementById('address').value,
     "reviews": [{
       "user": 'defaultUser',
@@ -413,22 +415,22 @@ function reviewSubmit() {
       }
     }],
     "tags": cleanTags(document.getElementById('tags').value),
-    "images": ['images/generic1.jpg','images/generic2.jpg']
+    "images": ['images/generic1.jpg', 'images/generic2.jpg']
   };
 
-  var i = RESTAURANTS.findIndex(function(restaurant){
+  var i = database.findIndex(function(restaurant){
     return restaurant.name.toLowerCase() == submission.name.toLowerCase();
   });
   if (i >= 0) {
-    submission.reviews[0].reviewId = RESTAURANTS[i].reviews.length;
-    RESTAURANTS[i].reviews.push(submission.reviews[0]);
-    RESTAURANTS[i].tags = _.union(RESTAURANTS[i].tags, submission.tags);
+    submission.reviews[0].reviewId = database[i].reviews.length;
+    database[i].reviews.push(submission.reviews[0]);
+    database[i].tags = _.union(database[i].tags, submission.tags);
   } else {
-    submission.restaurantId = RESTAURANTS.length;
-    RESTAURANTS.push(submission);
+    submission.restaurantId = database.length;
+    database.push(submission);
   }
-  serveResults(RESTAURANTS);
+  serveResults(database);
   toggle(document.getElementById('userReviewModal'), 'hidden');
 }
 
-serveResults(RESTAURANTS);
+serveResults(database);

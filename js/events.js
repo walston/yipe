@@ -25,7 +25,7 @@ document.body.addEventListener('click', function (e) {
     toggle(document.getElementById('userReviewModal'), 'hidden');
   }
   else if (method == 'location') {
-    serveLocation(RESTAURANTS[target.getAttribute('data-restaurantid')])
+    serveLocation(database[target.getAttribute('data-restaurantid')])
   }
   else if (method == 'results') {
     serveResults(lastServed);
