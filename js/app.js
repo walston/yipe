@@ -119,10 +119,14 @@ function sortPlates(restaurants, sortMethod) {
     serveResults(ordered);
   } else if (sortMethod == 'rating') {
     var ordered = _.sortBy(restaurants, function(restaurant) {
-      var averageRating = restaurantAverage(restaurant);
-      return averageRating;
+      return restaurantAverage(restaurant);
     });
     serveResults(ordered.reverse());
+  } else if (sortMethod == 'price') {
+    var ordered = _.sortBy(restaurants, function(restaurant) {
+      return restaurant.pricing;
+    });
+    serveResults(ordered)
   }
 }
 
@@ -130,6 +134,18 @@ function restaurantAverage (restaurant) {
   return _.reduce(restaurant.reviews, function (memo, value, index, list) {
       return memo + (value.rating / list.length);
     }, 0);
+}
+
+function ratingSymbols(repetitions, character, className){
+  var container = document.createElement('span');
+  for (var i = 0; i < repetitions; i++) {
+    var item = document.createElement('span');
+    item.className = className;
+    item.textContent = character;
+    container.appendChild(item);
+    container.appendChild(document.createTextNode(' '));
+  }
+  return container;
 }
 
 function serveCravings (element) {
@@ -148,6 +164,7 @@ function serveResults(restaurants, results) {
   function plate(restaurant) {
     var idealReview = _.max(restaurant.reviews, reviewRanking);
     var averageRating = Math.floor(restaurantAverage(restaurant));
+    var displayPricing = (restaurant.pricing / 5) + 1
     var dish = document.createElement('div');
     var mediaLeft = document.createElement('div');
     var imageWrapper = document.createElement('div');
@@ -155,7 +172,8 @@ function serveResults(restaurants, results) {
     var mediaBody = document.createElement('div');
     var name = document.createElement('h1');
     var nameLink = document.createElement('a');
-    var rating = document.createElement('span');
+    var rating = ratingSymbols(averageRating, '★', 'label label-danger');
+    var pricing = ratingSymbols(displayPricing, '$', 'label label-success');;
     var author = document.createElement('span');
     var review = document.createElement('p');
     var tagsContainer = tagMaker(restaurant.tags);
@@ -169,11 +187,11 @@ function serveResults(restaurants, results) {
     nameLink.href = '#';
     nameLink.setAttribute('data-restaurantid', restaurant.restaurantId);
     nameLink.setAttribute('data-method', 'location');
-    rating.className = 'text-muted h4';
+    rating.className = 'h6';
+    pricing.className = 'h6';
     author.className = 'text-muted h4';
 
     nameLink.textContent = restaurant.name;
-    rating.textContent = averageRating + '★';
     author.textContent = idealReview.user;
     review.textContent = idealReview.body;
 
@@ -185,6 +203,8 @@ function serveResults(restaurants, results) {
     name.appendChild(nameLink);
     name.appendChild(document.createTextNode(' '));
     name.appendChild(rating);
+    name.appendChild(document.createTextNode(' '));
+    name.appendChild(pricing);
     name.appendChild(document.createTextNode(' '));
     name.appendChild(author);
     mediaBody.appendChild(review);
@@ -272,11 +292,13 @@ function serveLocation(restaurant) {
 
   function mainCourse(restaurant) {
     var averageRating = Math.floor(restaurantAverage(restaurant));
+    var displayPricing = (restaurant.pricing / 5) + 1;
     var sortedReviews = _.sortBy(restaurant.reviews, reviewRanking);
     var card = document.createElement('div');
     var head = document.createElement('div');
     var name = document.createElement('h2');
-    var rating = document.createElement('span');
+    var rating = ratingSymbols(averageRating, '★', 'label label-danger');
+    var pricing = ratingSymbols(displayPricing, '$', 'label label-success');;
     var info = document.createElement('div');
     var address = document.createElement('p');
     var tagsContainer = tagMaker(restaurant.tags);
@@ -293,19 +315,22 @@ function serveLocation(restaurant) {
     card.className = 'row';
     head.className = 'container';
     name.className = 'row';
-    rating.className = 'text-muted';
+    rating.className = 'h6';
+    pricing.className = 'h6';
     info.className = 'row';
     address.className = 'text-info';
     tagsContainer.className = 'row';
     imageContainer.className = 'row';
 
     name.textContent = restaurant.name;
-    rating.textContent = averageRating + '★';
     address.textContent = restaurant.address;
 
     card.appendChild(head);
     head.appendChild(name);
     name.appendChild(document.createTextNode(' '));
+    name.appendChild(rating);
+    name.appendChild(document.createTextNode(' '));
+    name.appendChild(pricing);
     head.appendChild(info);
     info.appendChild(address);
     head.appendChild(tagsContainer);
@@ -372,22 +397,23 @@ function reviewSubmit() {
   }
 
   var submission = {
-    name: document.getElementById('restaurant').value,
-    restaurantId: 0,
-    address: document.getElementById('address').value,
-    reviews: [{
-      user: 'defaultUser',
-      reviewId: 0,
-      rating: document.getElementById('rating').value,
-      body: document.getElementById('reviewBody').value,
-      ups: {
-        helpful: [],
-        witty: [],
-        harsh: []
+    "name": document.getElementById('restaurant').value,
+    "restaurantId": 0,
+    "pricing": _.random(1,10),
+    "address": document.getElementById('address').value,
+    "reviews": [{
+      "user": 'defaultUser',
+      "reviewId": 0,
+      "rating": document.getElementById('rating').value,
+      "body": document.getElementById('reviewBody').value,
+      "ups": {
+        "helpful": [],
+        "witty": [],
+        "harsh": []
       }
     }],
-    tags: cleanTags(document.getElementById('tags').value),
-    images: ['images/generic1.jpg','images/generic2.jpg']
+    "tags": cleanTags(document.getElementById('tags').value),
+    "images": ['images/generic1.jpg','images/generic2.jpg']
   };
 
   var i = RESTAURANTS.findIndex(function(restaurant){
