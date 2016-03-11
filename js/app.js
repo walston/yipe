@@ -25,6 +25,7 @@ function searchSubmit() {
       return (query.test(obj.name) || obj.tags.some( function(tag){ return query.test(tag) }));
     })
   }
+
   function byLocation(obj) {
     if (form.location.length == 0) return true;
     return _.some(form.location, function (term) {
@@ -32,6 +33,7 @@ function searchSubmit() {
       return (location.test(obj.address));
     })
   }
+
   if (form.query.length > 0 || form.location.length > 0) {
     CRAVINGS.setAttribute('data-queried', 'true');
   } else {
@@ -92,7 +94,7 @@ function checkVotes(element) {
   var ups = review.ups[element.getAttribute('data-key')];
   redraw = (ups.length != element.getAttribute('data-value'));
   if (redraw){
-    var newVotes = votes(restaurant, review);
+    var newVotes = votes(restaurant.restaurantId, review);
     element.parentElement.parentElement.replaceChild(newVotes, element.parentElement);
   }
 }
@@ -101,10 +103,10 @@ function checkVotes(element) {
 //****** DOM Builders *******
 /////////////////////////////
 
-function searchTerms(returned, terms, locations) {
+function receipt(returned, terms, locations) {
   if (CRAVINGS.getAttribute('data-queried') == 'true') {
     var queryTerms = document.createElement('span');
-    queryTerms.className = 'h4 text-muted';
+    queryTerms.classList.add('h4', 'text-muted');
     queryTerms.textContent =  'We found ' + (returned != 1 ? returned + ' places' : '1 place');
     if (terms.length > 0) {
       queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
@@ -122,19 +124,19 @@ function searchTerms(returned, terms, locations) {
   }
 }
 
-function votes(restaurant, review) {
+function votes(restaurantId, review) {
   var container = document.createElement('p');
   container.setAttribute('data-model', 'votes');
   var buttons = _.map(review.ups, function(voters, key){
     var button = document.createElement('span');
     button.textContent = key + ' (' + voters.length + ')'
     if (voters.includes(me)) {
-      button.className = 'btn btn-xs btn-success';
+      button.classList.add('btn', 'btn-xs', 'btn-success');
     } else{
-      button.className = 'btn btn-xs btn-default';
+      button.classList.add('btn', 'btn-xs', 'btn-default');
     }
     button.setAttribute('data-method', 'vote');
-    button.setAttribute('data-restaurantid', restaurant.restaurantId);
+    button.setAttribute('data-restaurantid', restaurantId);
     button.setAttribute('data-reviewid', review.reviewId);
     button.setAttribute('data-key', key);
     button.setAttribute('data-value', voters.length);
@@ -148,12 +150,12 @@ function votes(restaurant, review) {
   return container;
 }
 
-function tagMaker(terms) {
+function itemTags(terms) {
   var container = document.createElement('p');
   var buttons = _.map(terms, function(tag) {
     var button = document.createElement('span');
     button.textContent = tag;
-    button.className = 'btn btn-xs btn-default';
+    button.classList.add('btn', 'btn-xs', 'btn-default');
     button.setAttribute('data-method', 'tag');
     button.setAttribute('data-value', tag);
     return button;
@@ -165,63 +167,105 @@ function tagMaker(terms) {
   return container;
 }
 
-function plate(restaurant) {
-  var idealReview = _.max(restaurant.reviews, reviewRanking);
+function itemTitle(restaurant) {
   var averageRating = Math.floor(restaurantAverage(restaurant));
-  var displayPricing = (restaurant.pricing / 5) + 1
-  var dish = document.createElement('div');
+  var displayPricing = (restaurant.pricing / 5) + 1;
+
+  var container = document.createElement('h2');
+  var name = document.createElement('span');
+  var rating = ratingSymbols(averageRating, '★', 'label label-danger');
+  var pricing = ratingSymbols(displayPricing, '$', 'label label-success');
+
+  name.textContent = restaurant.name;
+  name.classList.add('h3', 'clickable');
+  name.setAttribute('data-restaurantid', restaurant.restaurantId);
+  name.setAttribute('data-method', 'location');
+  rating.classList.add('h6');
+  pricing.classList.add('h6');
+
+  container.appendChild(name);
+  container.appendChild(document.createTextNode(' '));
+  container.appendChild(pricing);
+  container.appendChild(document.createTextNode(' '));
+  container.appendChild(rating);
+  container.appendChild(document.createTextNode(' '));
+
+  return container;
+}
+
+function itemReviews(restaurant) {
+  var sortedReviews = _.sortBy(restaurant.reviews, reviewRanking);
+  var container = document.createElement('div');
+  var reviews = sortedReviews.forEach(function (review) {
+    container.appendChild(itemReview(review, restaurant.restaurantId));
+  })
+  return container;
+}
+
+function itemReview(review, restaurantId) {
+  var container = document.createElement('p');
+  var author = document.createElement('span');
+  var rating = document.createElement('span');
+  var body = document.createElement('p');
+  if (restaurantId != undefined) {
+    var ups = votes(restaurantId, review);
+  }
+
+  container.classList.add('en-top');
+  author.classList.add('h5', 'text-primary');
+  rating.classList.add('text-muted');
+
+  author.textContent = review.user;
+  rating.textContent = review.rating + '★';
+  body.textContent = review.body;
+
+  container.appendChild(author);
+  container.appendChild(document.createTextNode(' '))
+  container.appendChild(rating);
+  container.appendChild(body);
+  if (ups) {
+    container.appendChild(ups);
+  }
+  return container;
+}
+
+function menuItem(restaurant) {
+  var idealReview = _.max(restaurant.reviews, reviewRanking);
+
+  var container = document.createElement('div');
   var mediaLeft = document.createElement('div');
   var imageWrapper = document.createElement('div');
   var image = document.createElement('img');
   var mediaBody = document.createElement('div');
-  var name = document.createElement('h1');
-  var nameLink = document.createElement('a');
-  var rating = ratingSymbols(averageRating, '★', 'label label-danger');
-  var pricing = ratingSymbols(displayPricing, '$', 'label label-success');;
-  var author = document.createElement('span');
-  var review = document.createElement('p');
-  var tagsContainer = tagMaker(restaurant.tags);
+  var name = itemTitle(restaurant);
+  var review = itemReview(idealReview);
+  var tags = itemTags(restaurant.tags);
 
-  dish.className = 'row';
-  mediaLeft.className = 'hidden-xs col-sm-3 col-md-2';
-  imageWrapper.className = 'em-top';
-  image.className = 'img-responsive inline-block';
+  container.classList.add('row');
+  mediaLeft.classList.add('hidden-xs', 'col-sm-3', 'col-md-2');
+  imageWrapper.classList.add('em-top');
+  image.classList.add('img-responsive', 'inline-block');
   image.src = restaurant.images[0];
-  mediaBody.className = 'col-xs-10 col-xs-offset-1 col-sm-offset-0 col-sm-9 col-md-10';
-  nameLink.href = '#';
-  nameLink.setAttribute('data-restaurantid', restaurant.restaurantId);
-  nameLink.setAttribute('data-method', 'location');
-  rating.className = 'h6';
-  pricing.className = 'h6';
-  author.className = 'text-muted h4';
+  mediaBody.classList.add('col-xs-10', 'col-xs-offset-1', 'col-sm-offset-0', 'col-sm-9', 'col-md-10');
 
-  nameLink.textContent = restaurant.name;
-  author.textContent = idealReview.user;
-  review.textContent = idealReview.body;
 
-  dish.appendChild(mediaLeft);
+  container.appendChild(mediaLeft);
   mediaLeft.appendChild(imageWrapper);
   imageWrapper.appendChild(image);
-  dish.appendChild(mediaBody);
+  container.appendChild(mediaBody);
   mediaBody.appendChild(name);
-  name.appendChild(nameLink);
-  name.appendChild(document.createTextNode(' '));
-  name.appendChild(rating);
-  name.appendChild(document.createTextNode(' '));
-  name.appendChild(pricing);
-  name.appendChild(document.createTextNode(' '));
-  name.appendChild(author);
   mediaBody.appendChild(review);
-  mediaBody.appendChild(tagsContainer);
-  return dish;
+  mediaBody.appendChild(tags);
+
+  return container;
 }
 
 function localNav() {
   var container = document.createElement('div');
   var back = document.createElement('a');
 
-  container.className = 'row em-bot';
-  back.className = 'btn btn-primary';
+  container.classList.add('row', 'em-bot');
+  back.classList.add('btn', 'btn-primary');
   back.href = '#'
   back.textContent = '← Back'
   back.setAttribute('data-method', 'results');
@@ -229,86 +273,60 @@ function localNav() {
   return container;
 }
 
-function reviewElementer(review) {
-  var restaurant = this;
-  var container = document.createElement('div');
-  var info = document.createElement('p');
-  var author = document.createElement('span');
-  var rating = document.createElement('span');
-  var body = document.createElement('p');
-  var upsContainer = votes(restaurant, review);
-
-  container.className = 'em-bot';
-  author.className = 'h4 text-muted';
-  rating.className = 'h4 text-muted';
-
-  author.textContent = review.user;
-  rating.textContent = review.rating + '★';
-  body.textContent = review.body;
-
-  container.appendChild(info);
-  info.appendChild(author);
-  info.appendChild(document.createTextNode(' '));
-  info.appendChild(rating);
-  container.appendChild(body);
-  container.appendChild(upsContainer);
-  return container;
-}
-
 function mainCourse(restaurant) {
   var averageRating = Math.floor(restaurantAverage(restaurant));
   var displayPricing = (restaurant.pricing / 5) + 1;
-  var sortedReviews = _.sortBy(restaurant.reviews, reviewRanking);
   var card = document.createElement('div');
   var head = document.createElement('div');
-  var name = document.createElement('h2');
-  var rating = ratingSymbols(averageRating, '★', 'label label-danger');
-  var pricing = ratingSymbols(displayPricing, '$', 'label label-success');;
+  var name = itemTitle(restaurant);
   var info = document.createElement('div');
   var address = document.createElement('p');
-  var tagsContainer = tagMaker(restaurant.tags);
+  var tags = itemTags(restaurant.tags);
   var imageContainer = document.createElement('div');
   var images = _.map(restaurant.images, function(path) {
     var image = document.createElement('img')
-      image.className = 'img-responsive thumbnail col-xs-2';
+      image.classList.add('img-responsive', 'thumbnail', 'col-xs-2');
       image.src = path;
       return image;
     });
-  var reviewsContainer = document.createElement('div');
-  var reviews = _.map(sortedReviews, reviewElementer, restaurant);
+  var reviews = itemReviews(restaurant);
 
-  card.className = 'row';
-  head.className = 'container';
-  name.className = 'row';
-  rating.className = 'h6';
-  pricing.className = 'h6';
-  info.className = 'row';
-  address.className = 'text-info';
-  tagsContainer.className = 'row';
-  imageContainer.className = 'row';
+  card.classList.add('row');
+  name.classList.add('row');
+  head.classList.add('container');
+  info.classList.add('row');
+  address.classList.add('text-info');
+  tags.classList.add('row');
+  imageContainer.classList.add('row');
 
-  name.textContent = restaurant.name;
   address.textContent = restaurant.address;
 
   card.appendChild(head);
   head.appendChild(name);
-  name.appendChild(document.createTextNode(' '));
-  name.appendChild(rating);
-  name.appendChild(document.createTextNode(' '));
-  name.appendChild(pricing);
   head.appendChild(info);
   info.appendChild(address);
-  head.appendChild(tagsContainer);
+  head.appendChild(tags);
   head.appendChild(imageContainer);
   images.forEach(function(image){
     imageContainer.appendChild(image);
     imageContainer.appendChild(document.createTextNode(' '));
   });
-  card.appendChild(reviewsContainer);
-  reviews.forEach(function(review) {
-    reviewsContainer.appendChild(review);
-  });
+  card.appendChild(reviews);
   return card;
+}
+
+function ratingSymbols(repetitions, character, classNames){
+  var container = document.createElement('span');
+  for (var i = 0; i < repetitions; i++) {
+    var item = document.createElement('span');
+    classNames.split(' ').forEach(function(className) {
+      item.classList.add(className);
+    })
+    item.textContent = character;
+    container.appendChild(item);
+    container.appendChild(document.createTextNode(' '));
+  }
+  return container;
 }
 
 /////////////////////////////
@@ -333,7 +351,7 @@ function toggle(element, value) {
   }
 }
 
-function searchTag(query) {
+function tagSearch(query) {
   var input = document.getElementById('query');
   input.value = query;
   searchSubmit();
@@ -347,16 +365,16 @@ function serveResults(database, results) {
     }
   }
   clear(TABLE);
-  serveCravings(searchTerms(database.length, results.query, results.location));
+  serveCravings(receipt(database.length, results.query, results.location));
   if (database.length == 0) {
     var noResults = document.createElement('img');
-    noResults.className = 'col-xs-8 col-xs-offset-2 em-top';
+    noResults.classList.add('col-xs-8', 'col-xs-offset-2', 'em-top');
     noResults.src = 'images/nothing.svg';
     noResults.setAttribute('alt', 'Nothing found...');
     TABLE.appendChild(noResults);
   } else {
     database.forEach(function(restaurant) {
-      TABLE.appendChild(plate(restaurant));
+      TABLE.appendChild(menuItem(restaurant));
     });
   }
   lastServed = database;
