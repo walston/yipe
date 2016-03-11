@@ -42,14 +42,32 @@ function reviewRanking(review) {
 }
 
 function toggle(element, value) {
-  var classList = element.className.split(' ');
-  var i = classList.indexOf(value);
-  if ( i < 0 ) {
-    classList.push(value);
+  if (element.classList.contains(value)) {
+    element.classList.remove(value);
   } else {
-    classList.splice(i, 1);
+    element.classList.add(value);
   }
-  element.className = classList.join(' ');
+}
+
+function searchTerms(returned, terms, locations) {
+  if (CRAVINGS.getAttribute('data-queried') == 'true') {
+    var queryTerms = document.createElement('span');
+    queryTerms.className = 'h4 text-muted';
+    queryTerms.textContent =  'We found ' + (returned != 1 ? returned + ' places' : '1 place');
+    if (terms.length > 0) {
+      queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
+        return '\''+term+'\'';
+      })
+      .join(', ');
+    }
+    if (locations.length > 0) {
+      queryTerms.textContent += ' near ' + locations.join(', ');
+    }
+    queryTerms.textContent += ':';
+    return queryTerms;
+  } else {
+    return document.createElement('br')
+  }
 }
 
 function vote(restaurantId, reviewId, tag) {
@@ -161,8 +179,6 @@ function serveResults(database, results) {
     }
   }
 
-  // append to the dom
-
   function plate(restaurant) {
     var idealReview = _.max(restaurant.reviews, reviewRanking);
     var averageRating = Math.floor(restaurantAverage(restaurant));
@@ -212,27 +228,6 @@ function serveResults(database, results) {
     mediaBody.appendChild(review);
     mediaBody.appendChild(tagsContainer);
     return dish;
-  }
-
-  function searchTerms(returned, terms, locations) {
-    if (CRAVINGS.getAttribute('data-queried') == 'true') {
-      var queryTerms = document.createElement('span');
-      queryTerms.className = 'h4 text-muted';
-      queryTerms.textContent =  'We found ' + (returned != 1? returned + ' places' : '1 place');
-      if (terms.length > 0) {
-        queryTerms.textContent += ' matching ' + _.map(terms, function(term) {
-          return '\''+term+'\'';
-        })
-        .join(', ');
-      }
-      if (locations.length > 0) {
-        queryTerms.textContent += ' near ' + locations.join(', ');
-      }
-      queryTerms.textContent += ':';
-      return queryTerms;
-    } else {
-      return document.createElement('br')
-    }
   }
 
   var TABLE = document.getElementById('Table');
