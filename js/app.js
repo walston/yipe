@@ -352,7 +352,6 @@ function searchSubmit() {
       return (location.test(obj.address));
     })
   }
-  console.log(form.query.length, form.location.length, form);
   if (form.query.length > 0 || form.location.length > 0) {
     CRAVINGS.setAttribute('data-queried', 'true');
   } else {
