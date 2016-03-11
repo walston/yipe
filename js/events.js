@@ -31,7 +31,7 @@ document.body.addEventListener('click', function (e) {
     serveResults(lastServed);
   }
   else if (method == 'sort') {
-    sortPlates(lastServed, target.getAttribute('data-sortmethod'));
+    sortMenu(lastServed, target.getAttribute('data-sortmethod'));
   }
   else if (method == 'tag') {
     tagSearch(target.getAttribute('data-value'));

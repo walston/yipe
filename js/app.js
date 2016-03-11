@@ -3,10 +3,6 @@ var CRAVINGS = document.getElementById('cravings');
 var me = 'defaultUser';
 var lastServed = database;
 
-/////////////////////////////
-//******* DOM Getters *******
-/////////////////////////////
-
 function searchSubmit() {
   var form = {
     query: _.filter(document.getElementById('query').value.split(/[\s,\.]+/), function(term) {
@@ -99,10 +95,6 @@ function checkVotes(element) {
   }
 }
 
-/////////////////////////////
-//****** DOM Builders *******
-/////////////////////////////
-
 function receipt(returned, terms, locations) {
   if (CRAVINGS.getAttribute('data-queried') == 'true') {
     var queryTerms = document.createElement('span');
@@ -173,8 +165,8 @@ function itemTitle(restaurant) {
 
   var container = document.createElement('h2');
   var name = document.createElement('span');
-  var rating = ratingSymbols(averageRating, '★', 'label label-danger');
-  var pricing = ratingSymbols(displayPricing, '$', 'label label-success');
+  var rating = ratingSymbols(averageRating, 'fa fa-star', 'label label-danger');
+  var pricing = ratingSymbols(displayPricing, 'fa fa-usd', 'label label-success');
 
   name.textContent = restaurant.name;
   name.classList.add('h3', 'clickable');
@@ -315,23 +307,23 @@ function mainCourse(restaurant) {
   return card;
 }
 
-function ratingSymbols(repetitions, character, classNames){
+function ratingSymbols(repetitions, characterCodes, classNames){
   var container = document.createElement('span');
   for (var i = 0; i < repetitions; i++) {
-    var item = document.createElement('span');
+    var wrap = document.createElement('span');
     classNames.split(' ').forEach(function(className) {
-      item.classList.add(className);
+      wrap.classList.add(className);
     })
-    item.textContent = character;
-    container.appendChild(item);
+    var character = document.createElement('i');
+    characterCodes.split(' ').forEach(function(code) {
+      character.classList.add(code);
+    })
+    wrap.appendChild(character);
+    container.appendChild(wrap);
     container.appendChild(document.createTextNode(' '));
   }
   return container;
 }
-
-/////////////////////////////
-//******* DOM Putters *******
-/////////////////////////////
 
 function clear(element, parent) {
   if (parent){
@@ -392,10 +384,6 @@ function serveCravings(element) {
   CRAVINGS.appendChild(element);
 }
 
-/////////////////////////////
-//**** Database Handlers ****
-/////////////////////////////
-
 function vote(restaurantId, reviewId, tag) {
   var ballotBox = database[restaurantId].reviews[reviewId].ups[tag];
   var i = ballotBox.indexOf(me)
@@ -413,7 +401,7 @@ function reviewRanking(review) {
   return ((helpfuls * 1.75) + wittys - harshes);
 }
 
-function sortPlates(database, sortMethod) {
+function sortMenu(database, sortMethod) {
   if (sortMethod == 'name') {
     var ordered = _.sortBy(database, function(restaurant) {
       return restaurant.name.toLowerCase();
@@ -431,10 +419,6 @@ function sortPlates(database, sortMethod) {
     serveResults(ordered)
   }
 }
-
-/////////////////////////////
-//**** Helper Functions *****
-/////////////////////////////
 
 function cleanTags(string) {
   tags = string.split(/\s*,\s*/ig);
