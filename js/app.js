@@ -372,22 +372,23 @@ function reviewSubmit() {
   }
 
   var submission = {
-    name: document.getElementById('restaurant').value,
-    restaurantId: 0,
-    address: document.getElementById('address').value,
-    reviews: [{
-      user: 'defaultUser',
-      reviewId: 0,
-      rating: document.getElementById('rating').value,
-      body: document.getElementById('reviewBody').value,
-      ups: {
-        helpful: [],
-        witty: [],
-        harsh: []
+    "name": document.getElementById('restaurant').value,
+    "restaurantId": 0,
+    "pricing": _.random(1,10),
+    "address": document.getElementById('address').value,
+    "reviews": [{
+      "user": 'defaultUser',
+      "reviewId": 0,
+      "rating": document.getElementById('rating').value,
+      "body": document.getElementById('reviewBody').value,
+      "ups": {
+        "helpful": [],
+        "witty": [],
+        "harsh": []
       }
     }],
-    tags: cleanTags(document.getElementById('tags').value),
-    images: ['images/generic1.jpg','images/generic2.jpg']
+    "tags": cleanTags(document.getElementById('tags').value),
+    "images": ['images/generic1.jpg','images/generic2.jpg']
   };
 
   var i = RESTAURANTS.findIndex(function(restaurant){
