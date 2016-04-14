@@ -1,7 +1,7 @@
 # yipe™
 __Yelp Functionality in a deconstructed front-end-only website. Project One at OCCS__
 
-![yipe.herokuapp.com](https://yipe.herokuapp.com/ "yipe™")
+[yipe.herokuapp.com](https://yipe.herokuapp.com/ "yipe™")
 
 ![Screenshot of yipe](screengrab.png?raw=true "screenshot of yipe")
 
