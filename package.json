@@ -1,0 +1,22 @@
+{
+  "name": "yipe",
+  "version": "1.0.0",
+  "description": "A yelp clone for OCCS Project One",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/walston/yipe.git"
+  },
+  "author": "Nathaniel Walston",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/walston/yipe/issues"
+  },
+  "homepage": "https://github.com/walston/yipe#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
